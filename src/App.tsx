@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import {
   LayoutGrid,
   LineChart,
@@ -403,17 +403,17 @@ export default function App() {
 
 {/* novo */}
 
-{/* NAV – quebra em múltiplas linhas quando faltar espaço (sem scroll) */}
-<div className="w-full md:w-auto ml-auto flex flex-wrap items-center gap-2 gap-y-2">
+<div className="flex items-center gap-2 overflow-x-auto ml-auto pb-1">
   {NAV.map(({ id, label }) => {
     const active = route === id;
     return (
       <button
         key={id}
         onClick={() => setRoute(id)}
-        className={`nav-chip shrink-0 px-4 py-2 rounded-2xl border
-                    ${active ? 'border-transparent text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]'
-                             : 'border-white/10 text-slate-100'}
+        className={`nav-chip px-4 py-2 rounded-2xl border
+                    ${active ? 'border-transparent' : 'border-white/10'}
+                    ${active ? 'text-white' : 'text-slate-100'}
+                    ${active ? 'shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]' : ''}
                     bg-white/5 hover:bg-white/10`}
         style={{ contain: 'layout paint' }}
       >
@@ -424,21 +424,11 @@ export default function App() {
             transition={{ type: 'spring', stiffness: 500, damping: 36, mass: 0.6 }}
           />
         )}
-        <span className="nav-label font-semibold whitespace-nowrap">
-          {label}
-        </span>
+        <span className="nav-label font-semibold whitespace-nowrap">{label}</span>
       </button>
     );
   })}
 </div>
-
-
-<style>{`
-  /* esconde a barra, mantém o scroll; não muda o visual dos chips */
-  .nav-scroll::-webkit-scrollbar{ display:none }
-  .nav-scroll{ scrollbar-width: none; -ms-overflow-style: none }
-`}</style>
-
 
 
         </div>
@@ -924,8 +914,8 @@ function Gerencial({ itens, prices }:{ itens:any[]; prices:Prices }){
 
 
 const RFQ_TYPES = [
-  { id: "infra", label: "Infra Estrutura Ar Condicionado" },
-  { id: "instalacao", label: "Instalação Ar Condicionado" },
+  { id: "infra", label: "Infra Estrutura de Ar Condicionado" },
+  { id: "instalacao", label: "Instalação de Ar Condicionado" },
   { id: "gas", label: "Tubulação de Gás" },
   { id: "outros", label: "Outros" },
 ] as const;
@@ -1151,19 +1141,86 @@ const salvar = () => {
 
 
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-        <div className="flex items-center justify-between mb-2"><h3 className="text-lg font-extrabold">Selecionar tipo(s) de orçamento</h3><span className="text-xs text-slate-400">Marque um ou mais</span></div>
-        <div className="flex flex-wrap gap-2">
-          {RFQ_TYPES.map(t => {
-            const active = tiposSelecionados.includes(t.id);
-            return active ? (
-              <span key={t.id} className="ai-chip"><button onClick={()=>toggleTipo(t.id)} className="ai-inner px-4 py-2 rounded-2xl font-semibold whitespace-nowrap">{t.label}</button></span>
-            ) : (
-              <button key={t.id} onClick={()=>toggleTipo(t.id)} className="px-4 py-2 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10">{t.label}</button>
-            );
-          })}
-        </div>
-      </div>
+<div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+  <div className="flex items-center justify-between mb-2">
+    <h3 className="text-lg font-extrabold">Selecionar tipo(s) de orçamento</h3>
+    <span className="text-xs text-slate-400">Marque um ou mais</span>
+  </div>
+
+  <div className="flex flex-wrap gap-2">
+    {RFQ_TYPES.map((t) => {
+      const active = tiposSelecionados.includes(t.id);
+      return (
+        <motion.button
+          key={t.id}
+          onClick={() => toggleTipo(t.id)}
+          className={`rfq-chip relative overflow-hidden px-4 py-2 rounded-2xl border
+                      ${active
+                        ? 'border-transparent text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]'
+                        : 'border-white/10 text-slate-100'}
+                      bg-white/5 hover:bg-white/10`}
+          style={{ contain: 'layout paint' }}
+          layout
+          whileTap={{ scale: 0.97 }}
+          whileHover={{ scale: active ? 1.02 : 1.01 }}
+          transition={{ type: 'spring', stiffness: 500, damping: 30, mass: 0.6 }}
+        >
+          {/* gradiente animado do ativo (igual ao da navegação) */}
+          <AnimatePresence>
+            {active && (
+              <motion.div
+                key="bg"
+                className="absolute inset-0 nav-active-surface z-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.22 }}
+                aria-hidden
+              />
+            )}
+          </AnimatePresence>
+
+          {/* rótulo acima das camadas */}
+          <span className="relative z-10 font-semibold whitespace-nowrap">
+            {t.label}
+          </span>
+        </motion.button>
+      );
+    })}
+  </div>
+
+  {/* Ripple/pulso só para estes chips */}
+  <style>{`
+    .rfq-chip{ -webkit-tap-highlight-color: transparent; }
+    .rfq-chip::after{
+      content:"";
+      position:absolute; inset:-20%;
+      border-radius:inherit;
+      pointer-events:none;
+      background: radial-gradient(circle at center,
+        rgba(34,197,94,.55),
+        rgba(20,184,166,.35),
+        rgba(14,165,233,.25),
+        transparent 60%);
+      transform: scale(0);
+      opacity: 0;
+    }
+    .rfq-chip:active::after{
+      animation: rfqPulse .45s ease-out forwards;
+    }
+    @keyframes rfqPulse{
+      0%   { transform: scale(0);   opacity: .40; }
+      100% { transform: scale(1.8); opacity: 0;   }
+    }
+  `}</style>
+</div>
+
+
+
+
+
+
+      
 
       {tiposSelecionados.length===0 && (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center text-slate-300">Selecione o tipo de orçamento para começar.</div>
