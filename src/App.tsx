@@ -438,7 +438,7 @@ export default function App() {
 
 <main className="mx-auto max-w-[1600px] px-4 pb-12 pt-3">
   <div className="relative rounded-[26px] mb-6 overflow-hidden">
-    {/* Fundo + borda discreta (seu original) */}
+    {/* Fundo + borda discreta */}
     <motion.div
       key={`surface-${route}`}
       layoutId={`surface-${route}`}
@@ -447,16 +447,21 @@ export default function App() {
       transition={{ type: "spring", stiffness: 420, damping: 36, mass: 0.6 }}
     />
 
-    {/* Borda animada: SVG com stroke alinhado no rx=26 (sem preencher nada) */}
+    {/* Borda animada: SVG – sem calc(), compatível com mobile */}
     <svg
       className="absolute inset-0 w-full h-full pointer-events-none"
       aria-hidden
+      preserveAspectRatio="none"
+      style={{ transform: 'translateZ(0)' }}
     >
       <defs>
         {/* gradiente que gira sobre a caixa (cores “andando” pela borda) */}
         <linearGradient id={`spinGrad-${route}`} x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
           <stop offset="0%"   stopColor="#22c55e"/>
-          <stop offset="50%"  stopColor="#0ea5e9"/>
+          <stop offset="20%"  stopColor="#0ea5e9"/>
+          <stop offset="40%"  stopColor="#8b5cf6"/>
+          <stop offset="60%"  stopColor="#22c55e"/>
+          <stop offset="80%"  stopColor="#0ea5e9"/>
           <stop offset="100%" stopColor="#8b5cf6"/>
           <animateTransform
             attributeName="gradientTransform"
@@ -467,10 +472,10 @@ export default function App() {
         </linearGradient>
       </defs>
 
-      {/* OBS: x/y = 1px e strokeWidth=2 -> stroke fica TODO para dentro, não corta */}
+      {/* stroke interno sem calc(): o overflow-hidden corta a metade externa */}
       <rect
-        x="1" y="1"
-        width="calc(100% - 2px)" height="calc(100% - 2px)"
+        x="0" y="0"
+        width="100%" height="100%"
         rx="26" ry="26"
         fill="none"
         stroke={`url(#spinGrad-${route})`}
