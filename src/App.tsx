@@ -403,17 +403,17 @@ export default function App() {
 
 {/* novo */}
 
-<div className="flex items-center gap-2 overflow-x-auto ml-auto pb-1">
+{/* NAV – quebra em múltiplas linhas quando faltar espaço (sem scroll) */}
+<div className="w-full md:w-auto ml-auto flex flex-wrap items-center gap-2 gap-y-2">
   {NAV.map(({ id, label }) => {
     const active = route === id;
     return (
       <button
         key={id}
         onClick={() => setRoute(id)}
-        className={`nav-chip px-4 py-2 rounded-2xl border
-                    ${active ? 'border-transparent' : 'border-white/10'}
-                    ${active ? 'text-white' : 'text-slate-100'}
-                    ${active ? 'shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]' : ''}
+        className={`nav-chip shrink-0 px-4 py-2 rounded-2xl border
+                    ${active ? 'border-transparent text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]'
+                             : 'border-white/10 text-slate-100'}
                     bg-white/5 hover:bg-white/10`}
         style={{ contain: 'layout paint' }}
       >
@@ -424,11 +424,23 @@ export default function App() {
             transition={{ type: 'spring', stiffness: 500, damping: 36, mass: 0.6 }}
           />
         )}
-        <span className="nav-label font-semibold whitespace-nowrap">{label}</span>
+        <span className="nav-label font-semibold whitespace-nowrap">
+          {label}
+        </span>
       </button>
     );
   })}
 </div>
+
+
+<style>{`
+  /* esconde a barra, mantém o scroll; não muda o visual dos chips */
+  .nav-scroll::-webkit-scrollbar{ display:none }
+  .nav-scroll{ scrollbar-width: none; -ms-overflow-style: none }
+`}</style>
+
+
+
         </div>
         <p className="mt-2 text-xs text-slate-400">Desenvolvido por rafaelmensen</p>
       </div>
@@ -912,8 +924,8 @@ function Gerencial({ itens, prices }:{ itens:any[]; prices:Prices }){
 
 
 const RFQ_TYPES = [
-  { id: "infra", label: "Infra Estrutura de Ar Condicionado" },
-  { id: "instalacao", label: "Instalação de Ar Condicionado" },
+  { id: "infra", label: "Infra Estrutura Ar Condicionado" },
+  { id: "instalacao", label: "Instalação Ar Condicionado" },
   { id: "gas", label: "Tubulação de Gás" },
   { id: "outros", label: "Outros" },
 ] as const;
