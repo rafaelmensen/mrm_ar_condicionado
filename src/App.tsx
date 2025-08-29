@@ -1583,22 +1583,204 @@ const salvar = () => {
                   <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-                      <div className="text-[11px] text-slate-400">Metros de Cobre</div>
-                      <input type="number" min={0} max={100} value={Number.isFinite(p.metros)?p.metros:0} onChange={(e)=>{
-                        const val = parseFloat((e.target as HTMLInputElement).value);
-                        updatePonto(p.id,{ metros: Number.isFinite(val)? Math.max(0, Math.min(100, val)) : 0 });
-                      }} className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1"/>
-                    </div>
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-                      <div className="text-[11px] text-slate-400">Cabo PP (m)</div>
-                      <input type="number" min={0} max={200} value={Number.isFinite(p.ppMetros)?p.ppMetros:0} onChange={(e)=>{
-                        const val = parseFloat((e.target as HTMLInputElement).value);
-                        updatePonto(p.id,{ ppMetros: Number.isFinite(val)? Math.max(0, Math.min(200, val)) : 0 });
-                      }} className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1"/>
-                    </div>
-                  </div>
+    {/* Metros / PP — responsivo, valor à esquerda e botões à direita */}
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-sm">
+  {/* Metros de Cobre */}
+  <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+    <div className="text-[11px] text-slate-400">Metros de Cobre</div>
+    <div className="mt-1 flex items-center gap-2 sm:gap-3 step-controls">
+      {/* valor (pill curto) */}
+      <div className="value-wrap relative shrink-0">
+        <input
+          type="number"
+          inputMode="numeric"
+          min={0}
+          max={100}
+          value={Number.isFinite(p.metros) ? p.metros : 0}
+          onChange={(e)=>{
+            const val = parseFloat((e.target as HTMLInputElement).value);
+            updatePonto(p.id,{ metros: Number.isFinite(val)? Math.max(0, Math.min(100, val)) : 0 });
+          }}
+          className="no-spin step-value value-pill text-lg sm:text-xl font-extrabold tabular-nums"
+        />
+        <span className="ghost ghost-minus">−</span>
+        <span className="ghost ghost-plus">+</span>
+      </div>
+
+      {/* – / + (sempre colado na direita) */}
+      <div className="flex items-center gap-2 ml-auto shrink-0">
+        <button
+          type="button"
+          aria-label="Diminuir metros"
+          className="btn-step z-10"
+          data-variant="minus"
+          disabled={(Number.isFinite(p.metros)?p.metros:0) <= 0}
+          onClick={()=>{
+            const v = Number.isFinite(p.metros)? p.metros : 0;
+            updatePonto(p.id, { metros: Math.max(0, Math.min(100, v - 1)) });
+          }}
+        >
+          <span className="flash" aria-hidden />
+          −
+        </button>
+        <button
+          type="button"
+          aria-label="Aumentar metros"
+          className="btn-step z-10"
+          data-variant="plus"
+          disabled={(Number.isFinite(p.metros)?p.metros:0) >= 100}
+          onClick={()=>{
+            const v = Number.isFinite(p.metros)? p.metros : 0;
+            updatePonto(p.id, { metros: Math.max(0, Math.min(100, v + 1)) });
+          }}
+        >
+          <span className="flash" aria-hidden />
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {/* Cabo PP (m) */}
+  <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+    <div className="text-[11px] text-slate-400">Cabo PP (m)</div>
+    <div className="mt-1 flex items-center gap-2 sm:gap-3 step-controls">
+      <div className="value-wrap relative shrink-0">
+        <input
+          type="number"
+          inputMode="numeric"
+          min={0}
+          max={200}
+          value={Number.isFinite(p.ppMetros) ? p.ppMetros : 0}
+          onChange={(e)=>{
+            const val = parseFloat((e.target as HTMLInputElement).value);
+            updatePonto(p.id,{ ppMetros: Number.isFinite(val)? Math.max(0, Math.min(200, val)) : 0 });
+          }}
+          className="no-spin step-value value-pill text-lg sm:text-xl font-extrabold tabular-nums"
+        />
+        <span className="ghost ghost-minus">−</span>
+        <span className="ghost ghost-plus">+</span>
+      </div>
+
+      <div className="flex items-center gap-2 ml-auto shrink-0">
+        <button
+          type="button"
+          aria-label="Diminuir PP"
+          className="btn-step z-10"
+          data-variant="minus"
+          disabled={(Number.isFinite(p.ppMetros)?p.ppMetros:0) <= 0}
+          onClick={()=>{
+            const v = Number.isFinite(p.ppMetros)? p.ppMetros : 0;
+            updatePonto(p.id, { ppMetros: Math.max(0, Math.min(200, v - 1)) });
+          }}
+        >
+          <span className="flash" aria-hidden />
+          −
+        </button>
+        <button
+          type="button"
+          aria-label="Aumentar PP"
+          className="btn-step z-10"
+          data-variant="plus"
+          disabled={(Number.isFinite(p.ppMetros)?p.ppMetros:0) >= 200}
+          onClick={()=>{
+            const v = Number.isFinite(p.ppMetros)? p.ppMetros : 0;
+            updatePonto(p.id, { ppMetros: Math.max(0, Math.min(200, v + 1)) });
+          }}
+        >
+          <span className="flash" aria-hidden />
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>{`
+  @keyframes navSlide { 0%{background-position:0% 0} 100%{background-position:-200% 0} }
+  @keyframes pulseUp   { 0%{transform:scale(1)} 40%{transform:scale(1.06)} 100%{transform:scale(1)} }
+  @keyframes pulseDown { 0%{transform:scale(1)} 40%{transform:scale(.95)} 100%{transform:scale(1)} }
+
+  /* ===== botões ===== */
+  .btn-step{
+    position:relative; overflow:visible;
+    width:2rem; height:2rem;
+    display:inline-flex; align-items:center; justify-content:center;
+    border-radius:.5rem; border:1px solid rgba(255,255,255,.10);
+    background:rgba(255,255,255,.06);
+    font-weight:700; line-height:1; user-select:none;
+    transition:background .15s ease, border-color .15s ease, opacity .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn-step .flash{
+    position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background:linear-gradient(90deg, var(--c1), var(--c2) 33%, var(--c3) 66%, var(--c4));
+    background-size:200% 100%;
+    opacity:0; transition:opacity .18s ease; filter:saturate(1.05);
+  }
+  .btn-step[data-variant="minus"]{ --c1:#dc2626; --c2:#ef4444; --c3:#f43f5e; --c4:#dc2626; }
+  .btn-step[data-variant="plus"] { --c1:#16a34a; --c2:#22c55e; --c3:#0ea5e9; --c4:#16a34a; }
+  .btn-step[data-variant="minus"]:hover{ background:rgba(239,68,68,.16); border-color:rgba(239,68,68,.45); }
+  .btn-step[data-variant="plus"]:hover { background:rgba(16,185,129,.18); border-color:rgba(16,185,129,.45); }
+  .btn-step:active{ border-color:transparent; }
+  .btn-step:active .flash{
+    opacity:.95; animation:navSlide .7s linear;
+    inset:-4px; border-radius:calc(.5rem + 4px);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .btn-step:active::before{
+    content:""; position:absolute; inset:-8px; pointer-events:none;
+    border-radius:calc(.5rem + 8px);
+    background:linear-gradient(90deg, var(--c1), var(--c2) 33%, var(--c3) 66%, var(--c4));
+    opacity:.28; filter:blur(10px);
+  }
+  .btn-step:disabled{ opacity:.45; cursor:not-allowed; }
+
+  /* ===== valor (pill curto) ===== */
+  .value-pill{
+    width:68px; padding:.35rem .55rem;
+    border-radius:.6rem;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.06);
+    color:#e7eef5; outline:none; text-align:left;
+  }
+  .value-pill:focus{ border-color:rgba(255,255,255,.22); background:rgba(255,255,255,.08); }
+
+  .step-value{ transition:color .25s ease, transform .25s ease, box-shadow .25s ease; font-variant-numeric:tabular-nums; }
+  .step-controls:has(.btn-step[data-variant="plus"]:active) .step-value{
+    animation:pulseUp .28s ease-out; color:#d1fae5; box-shadow:0 0 0 2px rgba(16,185,129,.35) inset;
+  }
+  .step-controls:has(.btn-step[data-variant="minus"]:active) .step-value{
+    animation:pulseDown .28s ease-out; color:#fecaca; box-shadow:0 0 0 2px rgba(239,68,68,.35) inset;
+  }
+
+  /* símbolos “fantasmas” ao lado do valor enquanto pressiona */
+  .ghost{
+    position:absolute; left:calc(100% + .35rem); top:50%;
+    transform:translateY(-50%) scale(.9);
+    opacity:0; font-weight:800; font-size:1rem;
+    transition:opacity .15s ease, transform .15s ease;
+    text-shadow:0 0 6px rgba(0,0,0,.25);
+  }
+  .ghost-plus{ color:#34d399; }
+  .ghost-minus{ color:#f87171; }
+  .step-controls:has(.btn-step[data-variant="plus"]:active) .ghost-plus{ opacity:1; transform:translateY(-50%) scale(1.05); }
+  .step-controls:has(.btn-step[data-variant="minus"]:active) .ghost-minus{ opacity:1; transform:translateY(-50%) scale(1.05); }
+
+  /* ===== responsividade (mobile) ===== */
+  @media (max-width: 420px){
+    .btn-step{ width:1.75rem; height:1.75rem; }
+    .value-pill{ width:56px; font-size:1rem; }
+    /* animação morde menos pra não invadir o card ao lado */
+    .btn-step:active .flash{ inset:-2px; border-radius:calc(.5rem + 2px); }
+    .btn-step:active::before{ inset:-6px; }
+  }
+
+  /* esconder setas do number */
+  .no-spin::-webkit-outer-spin-button,.no-spin::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  .no-spin{ -moz-appearance:textfield; }
+`}</style>
+
 
                   {/* <div className="grid grid-cols-4 gap-2 mt-3 text-sm">
                     <div className="rounded-xl border border-white/10 bg-white/5 p-2"><div className="text-[11px] text-slate-400">Cobre — L {spec.l} + S {spec.s}</div><div className="font-bold">R$ {(mtrs * cobrePM).toFixed(2)}</div><div className="text-[11px] text-slate-400">(R$ {cobrePM.toFixed(2)}/m)</div></div>
