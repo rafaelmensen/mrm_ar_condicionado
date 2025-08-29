@@ -922,7 +922,7 @@ function Gerencial({ itens, prices }:{ itens:any[]; prices:Prices }){
 
 
 const RFQ_TYPES = [
-  { id: "infra", label: "Infra Estrutura de Ar Condicionado" },
+  { id: "infra", label: "Infra Estrutura Ar Condicionado" },
   { id: "instalacao", label: "Instalação de Ar Condicionado" },
   { id: "gas", label: "Tubulação de Gás" },
   { id: "outros", label: "Outros" },
@@ -1519,7 +1519,7 @@ const salvar = () => {
 
       {tiposSelecionados.includes("infra") && (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <div className="mb-3"><h3 className="text-lg font-extrabold">Infra Estrutura — Pontos</h3><p className="text-xs text-slate-400">BTU define os diâmetros de cobre (L/S). Isolamento considera ambos os tubos (L + S). Corrugada usa automaticamente o <b>valor do cobre L+S</b> por metro. Preços editáveis em <b>Precificação</b>.</p></div>
+          <div className="mb-3"><h3 className="text-lg font-extrabold">Infra Estrutura — Pontos</h3><p className="text-xs text-slate-400"> Selecione os pontos.</p></div>
           <div className="flex items-center gap-2 mb-3"><button onClick={addPonto} className="w-full rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 py-2 flex items-center justify-center gap-2"><Plus className="w-4 h-4"/> Adicionar ponto</button></div>
 
           <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-3">
@@ -1937,21 +1937,56 @@ const salvar = () => {
     Pontos: <b>{qtdPontos}</b>
   </div>
 {/* taotaisss */}
-  <div className="text-sm">Cobre: <b>R$ {totais.totalCobre.toFixed(2)}</b></div>
-  <div className="text-sm">Isolamento: <b>R$ {totais.totalIsol.toFixed(2)}</b></div>
-  <div className="text-sm">Cabo PP: <b>R$ {totais.totalPP.toFixed(2)}</b></div>
-  <div className="text-sm">Fita PVC: <b>R$ {totais.totalFita.toFixed(2)}</b></div>
-  <div className="text-sm">Corrugada: <b>R$ {totais.totalCorr.toFixed(2)}</b></div>
-  <div className="text-sm">Caixa POP: <b>R$ {totais.totalCx.toFixed(2)}</b></div>
-  <div className="text-sm">Dreno: <b>R$ {totais.totalDreno.toFixed(2)}</b></div>
-  <div className="text-sm">Mão de obra: <b>R$ {totais.totalMO.toFixed(2)}</b></div>
-  
+{/* Totais por categoria — grid responsivo */}
+<div className="w-full grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 xl:grid-cols-4 gap-1.5">
+  {[
+    ['Cobre',       totais.totalCobre],
+    ['Isolamento',  totais.totalIsol],
+    ['Cabo PP',     totais.totalPP],
+    ['Fita PVC',    totais.totalFita],
+    ['Corrugada',   totais.totalCorr],
+    ['Caixa POP',   totais.totalCx],
+    ['Dreno',       totais.totalDreno],
+    ['Mão de obra', totais.totalMO],
+  ].map(([label, valor]) => (
+    <div
+      key={label as string}
+      className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1.5 flex items-center justify-between"
+    >
+      <span className="text-[11px] text-slate-400">{label}</span>
+      <span className="text-[13px] font-semibold tabular-nums text-slate-300">
+        R$ {(valor as number).toFixed(2)}
+      </span>
+    </div>
+  ))}
+</div>
 
-  <div className="w-full h-0" />
 
-  <div className="text-lg font-extrabold">Total: R$ {totais.total.toFixed(2)}</div>
-  <div className="text-lg font-extrabold text-emerald-300/90">Com Nota (+15%): R$ {totais.totalNota.toFixed(2)}</div>
-  <div className="text-lg font-extrabold text-sky-300/90">Com desconto (-5%): R$ {totais.totalDesc.toFixed(2)}</div>
+{/* separador */}
+<div className="w-full h-0" />
+
+{/* Totais principais — também em grid, mas com destaque */}
+<div className="w-full grid grid-cols-1 md:grid-cols-3 gap-2">
+  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+    <span className="text-sm">Total</span>
+    <b className="text-lg font-extrabold tabular-nums">R$ {totais.total.toFixed(2)}</b>
+  </div>
+
+  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+    <span className="text-sm text-emerald-300/90">Com Nota (+15%)</span>
+    <b className="text-lg font-extrabold text-emerald-300/90 tabular-nums">
+      R$ {totais.totalNota.toFixed(2)}
+    </b>
+  </div>
+
+  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+    <span className="text-sm text-sky-300/90">Com desconto (-5%)</span>
+    <b className="text-lg font-extrabold text-sky-300/90 tabular-nums">
+      R$ {totais.totalDesc.toFixed(2)}
+    </b>
+  </div>
+</div>
+
 
   {/* Média por ponto – aparece só quando houver 2+ pontos */}
   {qtdPontos > 1 && (
