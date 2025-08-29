@@ -403,32 +403,40 @@ export default function App() {
 
 {/* novo */}
 
-<div className="flex items-center gap-2 overflow-x-auto ml-auto pb-1">
-  {NAV.map(({ id, label }) => {
-    const active = route === id;
-    return (
-      <button
-        key={id}
-        onClick={() => setRoute(id)}
-        className={`nav-chip px-4 py-2 rounded-2xl border
-                    ${active ? 'border-transparent' : 'border-white/10'}
-                    ${active ? 'text-white' : 'text-slate-100'}
-                    ${active ? 'shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]' : ''}
-                    bg-white/5 hover:bg-white/10`}
-        style={{ contain: 'layout paint' }}
-      >
-        {active && (
-          <motion.div
-            layoutId="nav-active"
-            className="nav-active-surface"
-            transition={{ type: 'spring', stiffness: 500, damping: 36, mass: 0.6 }}
-          />
-        )}
-        <span className="nav-label font-semibold whitespace-nowrap">{label}</span>
-      </button>
-    );
-  })}
+<div className="w-full md:w-auto">
+  <div className="flex flex-wrap gap-2 justify-start">
+    {NAV.map(({ id, label }) => {
+      const active = route === id;
+      return (
+        <motion.button
+          key={id}
+          onClick={() => setRoute(id)}
+          layout="position"
+          className={`nav-chip px-4 py-2 rounded-2xl border ${
+            active
+              ? 'border-transparent text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]'
+              : 'border-white/10 text-slate-100'
+          } bg-white/5 hover:bg-white/10 basis-full sm:basis-auto`}
+          style={{ contain: 'layout paint' }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: 'spring', stiffness: 500, damping: 36, mass: 0.6 }}
+        >
+          {active && (
+            <motion.div
+              layoutId="nav-active"
+              className="nav-active-surface"
+              transition={{ type: 'spring', stiffness: 500, damping: 36, mass: 0.6 }}
+            />
+          )}
+          <span className="nav-label font-semibold whitespace-nowrap">{label}</span>
+        </motion.button>
+      );
+    })}
+  </div>
 </div>
+
+
+
 
 
         </div>
@@ -1147,14 +1155,15 @@ const salvar = () => {
     <span className="text-xs text-slate-400">Marque um ou mais</span>
   </div>
 
-  <div className="flex flex-wrap gap-2">
+  {/* 1 col (xs), 2 (sm+), 3 (xl+), 4 (2xl+) */}
+  <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
     {RFQ_TYPES.map((t) => {
       const active = tiposSelecionados.includes(t.id);
       return (
         <motion.button
           key={t.id}
           onClick={() => toggleTipo(t.id)}
-          className={`rfq-chip relative overflow-hidden px-4 py-2 rounded-2xl border
+          className={`rfq-chip relative overflow-hidden w-full min-w-0 px-4 py-2 rounded-2xl border
                       ${active
                         ? 'border-transparent text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]'
                         : 'border-white/10 text-slate-100'}
@@ -1165,7 +1174,6 @@ const salvar = () => {
           whileHover={{ scale: active ? 1.02 : 1.01 }}
           transition={{ type: 'spring', stiffness: 500, damping: 30, mass: 0.6 }}
         >
-          {/* gradiente animado do ativo (igual ao da navegação) */}
           <AnimatePresence>
             {active && (
               <motion.div
@@ -1180,8 +1188,7 @@ const salvar = () => {
             )}
           </AnimatePresence>
 
-          {/* rótulo acima das camadas */}
-          <span className="relative z-10 font-semibold whitespace-nowrap">
+          <span className="relative z-10 font-semibold whitespace-nowrap text-center block">
             {t.label}
           </span>
         </motion.button>
@@ -1214,6 +1221,7 @@ const salvar = () => {
     }
   `}</style>
 </div>
+
 
 
 
