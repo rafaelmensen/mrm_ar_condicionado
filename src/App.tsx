@@ -369,7 +369,14 @@ export default function App() {
 
       <div className="mx-auto max-w-[1600px] px-4">
         <div className="flex items-end justify-between gap-3 flex-wrap">
-          <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="text-4xl md:text-5xl font-extrabold tracking-tight">{NAV.find((n) => n.id === route)?.label}</motion.h1>
+<motion.h1
+  initial={{ opacity: 0, y: 8 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.35 }}
+  className="hidden sm:block text-4xl md:text-5xl font-extrabold tracking-tight"
+>
+  {NAV.find(n => n.id === route)?.label}
+</motion.h1>
 
 <div className="w-full md:w-auto">
   <div className="flex flex-wrap gap-2 justify-start">
