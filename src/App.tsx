@@ -130,7 +130,7 @@ const NAV_ANIM_CSS = `
 .nav-label{ position:relative; z-index:1 }
 `;
 
-const BRAND = { name: "MRM Ar Condicionado — Sistema", accentFrom: "#027a10ff", accentTo: "#003617" };
+const BRAND = { name: "MRM Ar Condicionado", accentFrom: "#0a0758ff", accentTo: "#010804ff" };
 
 const NAV = [
   { id: "gerencial", label: "Gerencial", icon: LayoutGrid },
@@ -361,7 +361,7 @@ export default function App() {
             <div className="h-9 w-9 rounded-xl shadow-lg" style={{ background: `linear-gradient(135deg, ${BRAND.accentFrom}, ${BRAND.accentTo})` }} />
             <div>
               <div className="text-lg font-extrabold tracking-tight">{BRAND.name}</div>
-              <div className="text-[11px] text-slate-400 -mt-0.5">Painel de orçamentos e operações</div>
+              <div className="text-[11px] text-slate-400 -mt-0.5">Sistema de Gestão</div>
             </div>
           </div>
         </div>
@@ -410,7 +410,7 @@ export default function App() {
 <main className="mx-auto max-w-[1600px] px-4 pb-12 pt-3">
   {/* aqui está a borda animada BORDA animada borda animada: */}
   {/* <div className="relative rounded-[26px] mb-6 overflow-hidden"> */}
-<div className="relative -mx-4 sm:mx-0 rounded-none sm:rounded-[26px] mb-6 overflow-hidden">
+<div className="relative -mx-4 sm:mx-0 rounded-[26px] mb-6 overflow-hidden">
 
     <motion.div
       key={`surface-${route}`}
@@ -465,7 +465,7 @@ export default function App() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 10 }}
         transition={{ duration: 0.22, ease: "easeOut", delay: 0.08 }}
-        className="relative z-10 p-4 md:p-6"
+className="relative z-10 p-2 sm:p-3 md:p-4"
       >
         {/* [NAVEGAÇÃO] GERENCIAL */}
 {route === "gerencial" && <Gerencial itens={lancamentos} prices={prices} />}
@@ -577,7 +577,8 @@ const margemOk  = margemPct >= 60;
           const precisaAviso7Dias  = typeof diasUteisAteAgenda === "number" && diasUteisAteAgenda > 7;
 
           return (
-            <div key={o.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div key={o.id} className="rounded-[20px] border border-white/10 bg-white/5 p-3 sm:p-4"
+>
 
               <div className="flex items-start justify-between">
                 <div>
@@ -817,7 +818,8 @@ function Gerencial({ itens, prices }:{ itens:any[]; prices:Prices }){
     <div className="space-y-6">
       <div className="grid md:grid-cols-3 gap-4">
         {[{t:'Orçamentos',v:m.qtd},{t:'Aprovados',v:m.aprovados},{t:'Taxa de aceitação',v:m.aceitacao.toFixed(1)+'%'}].map((c,i)=> (
-          <div key={i} className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div key={i} className="relative overflow-hidden rounded-[20px]
+ border border-white/10 bg-white/5 p-2 sm:p-3">
             <div className="absolute inset-0 -z-10 opacity-[.55]" style={{ background: `linear-gradient(135deg, ${BRAND.accentFrom}33, transparent 40%), linear-gradient(45deg, ${BRAND.accentTo}22, transparent 50%)` }} />
             <h3 className="text-lg font-extrabold">{c.t}</h3>
             <div className="mt-3 text-3xl font-extrabold">{c.v}</div>
@@ -826,19 +828,22 @@ function Gerencial({ itens, prices }:{ itens:any[]; prices:Prices }){
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="relative overflow-hidden rounded-[20px]
+ border border-white/10 bg-white/5 p-4">
           <h3 className="text-lg font-extrabold">Valores</h3>
           <div className="mt-2 text-sm">Orçado total: <b>R$ {m.total.toFixed(2)}</b></div>
           <div className="mt-1 text-sm">Faturamento materiais: <b>R$ {m.faturamento.toFixed(2)}</b></div>
           <div className="mt-1 text-sm">Pago total: <b>R$ {m.pagoValor.toFixed(2)}</b> ({m.pagos} registro(s))</div>
           <div className="mt-1 text-xs text-slate-400">Pagos: Nota 15%: {m.nota15} • Desc 5%: {m.desc5} • Sem ajuste: {m.sem}</div>
         </div>
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="relative overflow-hidden rounded-[20px]
+ border border-white/10 bg-white/5 p-4">
           <h3 className="text-lg font-extrabold">Agenda</h3>
           <div className="mt-2 text-sm">Agendados: <b>{m.agendados}</b></div>
           <div className="mt-1 text-xs text-slate-400">Próximos 7 dias: (mock)</div>
         </div>
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="relative overflow-hidden rounded-[20px]
+ border border-white/10 bg-white/5 p-4">
           <h3 className="text-lg font-extrabold">Materiais</h3>
           <div className="mt-2 text-sm">Cobre (L+S): <b>{m.cobreM} m</b></div>
           <div className="mt-1 text-sm">Cabo PP: <b>{m.ppM} m</b></div>
@@ -975,7 +980,8 @@ const salvar = () => {
 
 <div className="grid md:grid-cols-[2fr_220px] gap-3">
 
-  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+<div className="rounded-[20px] border border-white/10 bg-white/5 pt-2 pb-3 px-3 sm:pt-3 sm:pb-4 sm:px-4">
+
     <div className="grid md:grid-cols-3 gap-3">
       <div>
         <label className="text-xs text-slate-400">Cliente</label>
@@ -1017,7 +1023,8 @@ const salvar = () => {
     </div>
   </div>
 
-<div className="rounded-2xl border border-white/10 bg-white/5 p-4 flex flex-col gap-2 items-end justify-start w-[220px]">
+<div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-4 flex flex-col gap-2 items-end justify-start w-[220px]">
 
   <button
     onClick={salvar}
@@ -1058,10 +1065,12 @@ const salvar = () => {
 
 </div>
 
-<div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+<div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
   <div className="flex items-center justify-between mb-2">
-    <h3 className="text-lg font-extrabold">Selecionar tipo(s) de orçamento</h3>
-    <span className="text-xs text-slate-400">Marque um ou mais</span>
+    <h3 className="text-lg font-extrabold">Selecionar o Tipo de Orçamento</h3>
+    <span className="text-xs text-slate-400"></span>
   </div>
 
   <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
@@ -1130,11 +1139,14 @@ const salvar = () => {
 </div>
 
       {tiposSelecionados.length===0 && (
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center text-slate-300">Selecione o tipo de orçamento para começar.</div>
+        <div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-6 text-center text-slate-300">Selecione o tipo de orçamento para começar.</div>
       )}
 
 { /* [REALIZAR > INSTALAÇÃO] Mesmas ferramentas do INFRA */ selectedTipo === "instalacao" && (
-  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+  <div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
     <div className="mb-3">
       <h3 className="text-lg font-extrabold">Instalação — Pontos</h3>
       <p className="text-xs text-slate-400">Selecione os pontos.</p>
@@ -1282,7 +1294,8 @@ const salvar = () => {
   const fatTot   = fatCobre + fatIsol + fatPP + fatPVC + fatCor + fatCx + fatDr;
 
               return (
-                <div key={p.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div key={p.id} className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3">
                   <div className="flex items-center justify-between mb-2">
                     <input
                       value={p.nome}
@@ -1687,7 +1700,8 @@ const salvar = () => {
             })}
           </div>
 
-          <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
+          <div className="mt-4 rounded-[20px]
+ border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
 
   <div className="mr-auto text-sm">
     Pontos: <b>{qtdPontos}</b>
@@ -1781,7 +1795,9 @@ const salvar = () => {
       )}
 
 {tiposSelecionados.includes("infra") && (
-  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+  <div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
     <div className="mb-3">
       <h3 className="text-lg font-extrabold">Infra Estrutura — Pontos</h3>
       <p className="text-xs text-slate-400">Selecione os pontos.</p>
@@ -1931,7 +1947,8 @@ const salvar = () => {
   const fatTot   = fatCobre + fatIsol + fatPP + fatPVC + fatCor + fatCx + fatDr;
 
               return (
-                <div key={p.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div key={p.id} className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3">
                   <div className="flex items-center justify-between mb-2">
                     <input
                       value={p.nome}
@@ -2336,7 +2353,8 @@ const salvar = () => {
             })}
           </div>
 
-          <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
+          <div className="mt-4 rounded-[20px]
+ border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
 
   <div className="mr-auto text-sm">
     Pontos: <b>{qtdPontos}</b>
@@ -2478,14 +2496,17 @@ function Precificacao({ prices, onChange }:{ prices:Prices; onChange:(p:Prices)=
         </div>
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+      <div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
         <div className="flex items-center justify-between"><h3 className="text-lg font-extrabold">Cobre — preço por bobina (15m)</h3></div>
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 mt-3">
           {DIAS.map(d => {
             const cobreV = prices.cobre?.[d] ?? 0;
             const cobreC = prices.custoCobre?.[d] ?? Math.round(cobreV/2);
             return (
-              <div key={d} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+              <div key={d} className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3">
                 <div className="text-sm font-semibold">{d}</div>
                 <div className="text-xs text-slate-400">Vendido (bobina)</div>
                 <div className="mt-1 text-lg font-extrabold">R$ {cobreV.toFixed(2)}</div>
@@ -2499,14 +2520,17 @@ function Precificacao({ prices, onChange }:{ prices:Prices; onChange:(p:Prices)=
         </div>
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+      <div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
         <h3 className="text-lg font-extrabold mb-3">Isolamento — preço por bobina (tubo 2m)</h3>
         <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-3">
           {DIAS.map(d => {
             const isolV = prices.isol?.[d] ?? 0;
             const isolC = prices.custoIsol?.[d] ?? Math.round(isolV/2);
             return (
-              <div key={d} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+              <div key={d} className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3">
                 <div className="text-sm font-semibold">{d}</div>
                 <div className="text-xs text-slate-400">Vendido (bobina)</div>
                 <div className="mt-1 text-lg font-extrabold">R$ {isolV.toFixed(2)}</div>
@@ -2521,13 +2545,17 @@ function Precificacao({ prices, onChange }:{ prices:Prices; onChange:(p:Prices)=
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
           <h3 className="text-lg font-extrabold mb-3">Cabo PP — preço por metro</h3>
           <div className="flex items-center gap-4"><div className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-lg font-extrabold">R$ {(Number(prices.pp ?? 0)).toFixed(2)}</div><input type="range" min={1} max={50} step={1} value={Number(prices.pp ?? 0)} onChange={(e)=>setPP(parseFloat((e.target as HTMLInputElement).value))} className="w-full"/></div>
           <div className="mt-3 text-xs text-slate-400">Comprado (custo) — por metro</div>
           <input type="number" min={0} step={0.5} value={Number(prices.custoPP ?? 0)} onChange={(e)=>setPPC(parseFloat((e.target as HTMLInputElement).value)||0)} className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1"/>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
   <h3 className="text-lg font-extrabold mb-3">Fita PVC — preço por metro</h3>
   <div className="flex items-center gap-4">
     <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-lg font-extrabold">
@@ -2554,7 +2582,9 @@ function Precificacao({ prices, onChange }:{ prices:Prices; onChange:(p:Prices)=
   />
 </div>
 
-<div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+<div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
   <h3 className="text-lg font-extrabold mb-1">Corrugada — preço por metro</h3>
   <div className="text-xs text-slate-400 mb-3">
     Defina aqui o valor de venda (R$/m) e o custo (R$/m) da corrugada.
@@ -2589,13 +2619,17 @@ function Precificacao({ prices, onChange }:{ prices:Prices; onChange:(p:Prices)=
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
           <h3 className="text-lg font-extrabold mb-3">Caixa POP — preço por ponto</h3>
           <div className="flex items-center gap-4"><div className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-lg font-extrabold">R$ {(Number(prices.caixa ?? 0)).toFixed(2)}</div><input type="range" min={0} max={200} step={5} value={Number(prices.caixa ?? 0)} onChange={(e)=>setCx(parseFloat((e.target as HTMLInputElement).value))} className="w-full"/></div>
           <div className="mt-3 text-xs text-slate-400">Comprado (custo) — por ponto</div>
           <input type="number" min={0} step={1} value={Number(prices.custoCaixa ?? 0)} onChange={(e)=>setCxC(parseFloat((e.target as HTMLInputElement).value)||0)} className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1"/>
         </div>
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-[20px]
+ border border-white/10 bg-white/5 p-3 sm:p-4"
+>
           <h3 className="text-lg font-extrabold mb-3">Dreno — preço por ponto</h3>
           <div className="flex items-center gap-4"><div className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-lg font-extrabold">R$ {(Number(prices.dreno ?? 0)).toFixed(2)}</div><input type="range" min={0} max={200} step={5} value={Number(prices.dreno ?? 0)} onChange={(e)=>setDreno(parseFloat((e.target as HTMLInputElement).value))} className="w-full"/></div>
           <div className="mt-3 text-xs text-slate-400">Comprado (custo) — por ponto</div>
