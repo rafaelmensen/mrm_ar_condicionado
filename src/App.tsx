@@ -350,7 +350,7 @@ export default function App() {
   useEffect(()=>{ try { localStorage.setItem("mrm-prices", JSON.stringify(prices)); } catch {} }, [prices]);
 
   return (
-    <div className={dark ? "text-slate-100 bg-[#0d1220]" : "text-slate-100 bg-[#0d1220]"}
+<div className={dark ? "text-slate-100 bg-[#0d1220] overflow-x-hidden" : "text-slate-100 bg-[#0d1220] overflow-x-hidden"}
          style={{ minHeight: "100vh", backgroundImage: 'radial-gradient(1200px 300px at 20% -10%, rgba(255,255,255,.06), transparent), radial-gradient(1000px 400px at 110% 10%, rgba(16,185,129,.14), transparent)'}}
     >
       <style>{AIBORDER_CSS + FORM_DARK_CSS + BORDER_GRADIENT_CSS + NAV_GRADIENT_CSS}</style>
@@ -408,12 +408,12 @@ export default function App() {
       </div>
 
 <main className="mx-auto max-w-[1600px] px-4 pb-12 pt-3">
-  <div className="relative rounded-[26px] mb-6 overflow-hidden">
+<div className="-mx-4 md:mx-0 md:relative md:rounded-[26px] md:mb-6 md:overflow-hidden">
 
     <motion.div
       key={`surface-${route}`}
       layoutId={`surface-${route}`}
-      className="absolute inset-0 rounded-[26px] border border-white/10"
+className="hidden md:block absolute inset-0 w-full h-full pointer-events-none"
       style={{ background: "rgba(255,255,255,0.04)" }}
       transition={{ type: "spring", stiffness: 420, damping: 36, mass: 0.6 }}
     />
