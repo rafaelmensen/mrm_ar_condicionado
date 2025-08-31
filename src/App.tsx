@@ -350,7 +350,7 @@ export default function App() {
   useEffect(()=>{ try { localStorage.setItem("mrm-prices", JSON.stringify(prices)); } catch {} }, [prices]);
 
   return (
-<div className={dark ? "text-slate-100 bg-[#0d1220] overflow-x-hidden" : "text-slate-100 bg-[#0d1220] overflow-x-hidden"}
+    <div className={dark ? "text-slate-100 bg-[#0d1220]" : "text-slate-100 bg-[#0d1220]"}
          style={{ minHeight: "100vh", backgroundImage: 'radial-gradient(1200px 300px at 20% -10%, rgba(255,255,255,.06), transparent), radial-gradient(1000px 400px at 110% 10%, rgba(16,185,129,.14), transparent)'}}
     >
       <style>{AIBORDER_CSS + FORM_DARK_CSS + BORDER_GRADIENT_CSS + NAV_GRADIENT_CSS}</style>
@@ -408,12 +408,14 @@ export default function App() {
       </div>
 
 <main className="mx-auto max-w-[1600px] px-4 pb-12 pt-3">
-<div className="-mx-4 md:mx-0 md:relative md:rounded-[26px] md:mb-6 md:overflow-hidden">
+  {/* aqui está a borda animada BORDA animada borda animada: */}
+  {/* <div className="relative rounded-[26px] mb-6 overflow-hidden"> */}
+<div className="relative -mx-4 sm:mx-0 rounded-none sm:rounded-[26px] mb-6 overflow-hidden">
 
     <motion.div
       key={`surface-${route}`}
       layoutId={`surface-${route}`}
-className="hidden md:block absolute inset-0 w-full h-full pointer-events-none"
+      className="absolute inset-0 rounded-[26px] border border-white/10"
       style={{ background: "rgba(255,255,255,0.04)" }}
       transition={{ type: "spring", stiffness: 420, damping: 36, mass: 0.6 }}
     />
@@ -1890,15 +1892,6 @@ const salvar = () => {
 
 
 
-
-
-
-
-
-
-
-
-
 {pontos.map((p) => {
   const spec = BTU_OPTIONS.find(b => b.label===p.btu) || BTU_OPTIONS[0];
   const cobrePM = pricePerMeterCobre(spec.l, prices) + pricePerMeterCobre(spec.s, prices);
@@ -1945,9 +1938,6 @@ const salvar = () => {
                       onChange={(e)=>updatePonto(p.id,{ nome: (e.target as HTMLInputElement).value })}
                       className="text-sm font-semibold bg-white/5 border border-white/10 rounded-lg px-2 py-1 w-[70%]"
                     />
-
-
-                    
                     <button onClick={()=>removePonto(p.id)} className="rounded-lg px-2 py-1 bg-white/5 hover:bg-white/10 text-slate-300 flex items-center gap-1 border border-white/10" title="remover ponto"><Trash2 className="w-3 h-3"/> remover</button>
                   </div>
 
@@ -1957,7 +1947,8 @@ const salvar = () => {
                   </select>
                   <div className="mt-1 text-xs text-slate-400">Tubulação {spec.l} e  {spec.s}</div>
 
-                  <div className="mt-3 grid grid-cols-3 gap-2 text-sm"> </div>
+                  <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
+                  </div>
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-sm">
 
