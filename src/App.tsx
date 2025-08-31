@@ -10,9 +10,6 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-/* =========================
-   CSS / TEMA
-========================= */
 const AIBORDER_CSS = `
 .ai-chip{ display:inline-block; padding:2px; border-radius:16px; background:linear-gradient(90deg,#22c55e,#14b8a6,#22c55e,#0ea5e9); background-size:300% 300%; animation:aiGlow 5s linear infinite }
 .ai-chip .ai-inner{ display:inline-block; background:rgba(255,255,255,.06); border-radius:14px }
@@ -33,17 +30,15 @@ const BORDER_GRADIENT_CSS = `
 @property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 @keyframes spinBorder { to { --a: 360deg; } }
 
-/* overlay da borda animada */
 .border-anim{
   position:absolute; inset:0; pointer-events:none; z-index:5;
 }
 
-/* entra 1px pra dentro e ajusta o raio (26-1=25) pra não cortar nas quinas */
 .border-anim::before{
   content:"";
-  position:absolute; inset:1px;        /* <<< evita clip nas bordas */
-  border-radius:25px;                   /* <<< 26-1 */
-  border: 2px solid transparent;        /* espessura da borda animada */
+  position:absolute; inset:1px;
+  border-radius:25px;
+  border: 2px solid transparent;
   border-image: conic-gradient(
     from var(--a),
     #22c55e, #14b8a6, #0ea5e9, #8b5cf6, #22c55e
@@ -51,11 +46,10 @@ const BORDER_GRADIENT_CSS = `
   animation: spinBorder 8s linear infinite;
 }
 
-/* brilho (opcional). Remova se não quiser glow */
 .border-anim::after{
   content:"";
   position:absolute; inset:-6px;
-  border-radius:31px;                   /* 25 + 6 */
+  border-radius:31px;
   filter: blur(10px);
   opacity:.18;
   background:
@@ -70,10 +64,8 @@ const NAV_GRADIENT_CSS = `
   100% { background-position: -200% 0; }
 }
 
-/* recipiente do chip */
 .nav-chip{ position:relative; overflow:hidden; border-radius:1rem; }
 
-/* superfície animada do chip ATIVO – sem traço */
 .nav-active-surface{
   position:absolute; inset:0; z-index:0; border-radius:inherit;
   background: linear-gradient(90deg,
@@ -87,18 +79,14 @@ const NAV_GRADIENT_CSS = `
   filter: saturate(1.05);
 }
 
-/* texto acima do overlay */
 .nav-label{ position:relative; z-index:1; }
 `;
-
 
 const NAV_ANIM_CSS = `
 @keyframes navSlide { 0%{background-position:0% 0} 100%{background-position:-200% 0} }
 
-/* container do chip de navegação */
 .nav-chip{ position:relative; overflow:visible; border-radius:1rem }
 
-/* preenchimento animado quando o item está ATIVO */
 .nav-active-surface{
   position:absolute; inset:0; z-index:0; border-radius:inherit;
   background: linear-gradient(90deg, var(--c1), var(--c2) 33%, var(--c3) 66%, var(--c4));
@@ -107,7 +95,6 @@ const NAV_ANIM_CSS = `
   filter:saturate(1.05)
 }
 
-/* borda animada no hover/focus (usa máscara p/ virar “ring”) */
 .nav-hover-border{
   position:absolute; inset:0; border-radius:inherit; pointer-events:none;
   background: linear-gradient(90deg, var(--c1), var(--c2) 33%, var(--c3) 66%, var(--c4));
@@ -121,7 +108,6 @@ const NAV_ANIM_CSS = `
   opacity:1; animation: navSlide var(--speed,6s) linear infinite;
 }
 
-/* marcador inferior (underline) */
 .nav-hover-underline{
   position:absolute; left:12%; right:12%; bottom:-8px; height:3px;
   border-radius:999px; pointer-events:none; opacity:0; transform:scaleX(.85);
@@ -135,19 +121,14 @@ const NAV_ANIM_CSS = `
   opacity:1; transform:scaleX(1); animation: navSlide var(--speed,6s) linear infinite;
 }
 
-/* acessibilidade */
 @media (prefers-reduced-motion: reduce){
   .nav-active-surface, .nav-hover-border, .nav-hover-underline{
     animation:none; background-position:50% 0
   }
 }
 
-/* texto do chip acima das camadas */
 .nav-label{ position:relative; z-index:1 }
 `;
-
-
-
 
 const BRAND = { name: "MRM Ar Condicionado — Sistema", accentFrom: "#027a10ff", accentTo: "#003617" };
 
@@ -271,9 +252,9 @@ function computeResumo(pontos: InfraPoint[], prices: Prices){
     if(p.caixa){ caixa += prices.caixa; fat += (prices.caixa - prices.custoCaixa); }
     if(p.dreno){ dreno += prices.dreno; fat += (prices.dreno - prices.custoDreno); }
 
-    const mo = (p.maoObraOutro ?? p.maoObra) || 0; 
-    maoDeObra += mo; 
-    fat += mo; // mão de obra entra no "lucro" do orçamento
+    const mo = (p.maoObraOutro ?? p.maoObra) || 0;
+    maoDeObra += mo;
+    fat += mo;
   });
   const total = cobre+isolamento+pp+corrugada+caixa+dreno+maoDeObra+fitaPVC;
   return {
@@ -282,9 +263,6 @@ function computeResumo(pontos: InfraPoint[], prices: Prices){
   };
 }
 
-/* =========================
-   DEV TESTS (mantidos)
-========================= */
 function runDevTests(){
   try{
     const n = normalizePrices({});
@@ -322,10 +300,6 @@ if (typeof window !== 'undefined' && !(window as any).__mrmDevTestsRun){
   (window as any).__mrmDevTestsRun = true; runDevTests();
 }
 
-/* =========================
-   HELPERS GLOBAIS (dias úteis)
-========================= */
-// Dias úteis entre duas datas (inclusive)
 function businessDaysBetween(a?: string | null, b?: string | null) {
   if (!a || !b) return null;
   const start = new Date(a);
@@ -344,7 +318,6 @@ function businessDaysBetween(a?: string | null, b?: string | null) {
   return Math.abs(days);
 }
 
-// Dias úteis de hoje até a data alvo
 function businessDaysFromToday(target?: string | null) {
   if (!target) return null;
   const end = new Date(target);
@@ -363,9 +336,13 @@ function businessDaysFromToday(target?: string | null) {
   return days;
 }
 
-/* =========================
-   APP
-========================= */
+
+        // ========= Animations =========
+        const PONTO_VARIANTS = {
+          initial: { opacity: 0, y: 20, scale: 0.98, filter: "blur(6px)" },
+          animate: { opacity: 1, y: 0,  scale: 1,    filter: "blur(0px)" },
+        };
+    
 export default function App() {
   const dark = true;
   const [route, setRoute] = useState("gerencial");
@@ -401,8 +378,6 @@ export default function App() {
         <div className="flex items-end justify-between gap-3 flex-wrap">
           <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="text-4xl md:text-5xl font-extrabold tracking-tight">{NAV.find((n) => n.id === route)?.label}</motion.h1>
 
-{/* novo */}
-
 <div className="w-full md:w-auto">
   <div className="flex flex-wrap gap-2 justify-start">
     {NAV.map(({ id, label }) => {
@@ -435,20 +410,13 @@ export default function App() {
   </div>
 </div>
 
-
-
-
-
         </div>
         <p className="mt-2 text-xs text-slate-400">Desenvolvido por rafaelmensen</p>
       </div>
 
-
-      
-
 <main className="mx-auto max-w-[1600px] px-4 pb-12 pt-3">
   <div className="relative rounded-[26px] mb-6 overflow-hidden">
-    {/* Fundo + borda discreta */}
+
     <motion.div
       key={`surface-${route}`}
       layoutId={`surface-${route}`}
@@ -457,7 +425,6 @@ export default function App() {
       transition={{ type: "spring", stiffness: 420, damping: 36, mass: 0.6 }}
     />
 
-    {/* Borda animada: SVG – sem calc(), compatível com mobile */}
     <svg
       className="absolute inset-0 w-full h-full pointer-events-none"
       aria-hidden
@@ -465,7 +432,7 @@ export default function App() {
       style={{ transform: 'translateZ(0)' }}
     >
       <defs>
-        {/* gradiente que gira sobre a caixa (cores “andando” pela borda) */}
+
         <linearGradient id={`spinGrad-${route}`} x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
           <stop offset="0%"   stopColor="#22c55e"/>
           <stop offset="20%"  stopColor="#0ea5e9"/>
@@ -482,7 +449,6 @@ export default function App() {
         </linearGradient>
       </defs>
 
-      {/* stroke interno sem calc(): o overflow-hidden corta a metade externa */}
       <rect
         x="0" y="0"
         width="100%" height="100%"
@@ -497,7 +463,6 @@ export default function App() {
       />
     </svg>
 
-    {/* Conteúdo */}
     <AnimatePresence mode="wait">
       <motion.div
         key={route}
@@ -507,9 +472,11 @@ export default function App() {
         transition={{ duration: 0.22, ease: "easeOut", delay: 0.08 }}
         className="relative z-10 p-4 md:p-6"
       >
-        {route === "gerencial" && <Gerencial itens={lancamentos} prices={prices} />}
+        {/* [NAVEGAÇÃO] GERENCIAL */}
+{route === "gerencial" && <Gerencial itens={lancamentos} prices={prices} />}
 
-        {route === "realizar" && (
+        {/* [NAVEGAÇÃO] REALIZAR ORÇAMENTO */}
+{route === "realizar" && (
           <RealizarOrcamento
             prices={prices}
             onSave={(orc) => {
@@ -519,7 +486,8 @@ export default function App() {
           />
         )}
 
-        {route === "lancamentos" && (
+        {/* [NAVEGAÇÃO] LANÇAMENTOS */}
+{route === "lancamentos" && (
           <Lancamentos
             itens={lancamentos}
             onDelete={(id) => setLancamentos((prev) => prev.filter((i) => i.id !== id))}
@@ -539,31 +507,23 @@ export default function App() {
           />
         )}
 
-        {route === "precificacao" && <Precificacao prices={prices} onChange={setPrices} />}
+        {/* [NAVEGAÇÃO] PRECIFICAÇÃO */}
+{route === "precificacao" && <Precificacao prices={prices} onChange={setPrices} />}
       </motion.div>
     </AnimatePresence>
   </div>
 </main>
 
-
-
-
     </div>
   );
 }
 
-/* =========================
-   UTILS
-========================= */
 function cryptoId(){
   return (typeof crypto !== 'undefined' && 'randomUUID' in crypto)
     ? crypto.randomUUID()
     : Math.random().toString(36).slice(2);
 }
 
-/* =========================
-   Lançamentos
-========================= */
 function Lancamentos({
   itens,
   onDelete,
@@ -606,18 +566,16 @@ function Lancamentos({
         {itens.map((o)=> {
           const resumo = o._resumo;
           const sub = Number(resumo?.total ?? o.total ?? 0);
-          const fatMateriais = Number(resumo?.totalFat ?? 0);         // faturamento (materiais) salvo
+          const fatMateriais = Number(resumo?.totalFat ?? 0);
 const moOriginal = Number(resumo?.categorias?.maoDeObra ?? 0);
 
 const pagoVal = typeof o.pagoValor === "number" ? o.pagoValor : undefined;
 const extraMO  = o.pago && typeof pagoVal === "number" && pagoVal > sub ? (pagoVal - sub) : 0;
-const moFinal  = moOriginal + (extraMO > 0 ? extraMO : 0);  // continua para a mensagem informativa
+const moFinal  = moOriginal + (extraMO > 0 ? extraMO : 0);
 
-// NOVA REGRA DE MARGEM: (faturamento materiais) ÷ (pago, se houver >0; senão subtotal)
 const denom = (o.pago && typeof o.pagoValor === "number" && o.pagoValor > 0) ? o.pagoValor : sub;
 const margemPct = denom > 0 ? (fatMateriais / denom) * 100 : 0;
 const margemOk  = margemPct >= 60;
-
 
           const diasUteisAgCon   = businessDaysBetween(o.agendadoPara, o.concluidoEm);
           const diasUteisAteAgenda = businessDaysFromToday(o.agendadoPara);
@@ -625,7 +583,7 @@ const margemOk  = margemPct >= 60;
 
           return (
             <div key={o.id} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              {/* Cabeçalho */}
+
               <div className="flex items-start justify-between">
                 <div>
                   <div className="text-xs text-slate-400">{new Date(o.createdAt).toLocaleString()}</div>
@@ -651,7 +609,6 @@ const margemOk  = margemPct >= 60;
                 </div>
               </div>
 
-              {/* Total + badges de Pago e NF */}
               <div className="mt-2 font-bold flex items-center gap-2">
                 <span>Topal (salvo): R$ {sub.toFixed(2)}</span>
 
@@ -675,7 +632,6 @@ const margemOk  = margemPct >= 60;
                 </span>
               </div>
 
-              {/* Resumo / totais */}
               <div className="mt-3 rounded-xl border border-white/10 bg-white/5 p-2 text-xs text-slate-300">
                 <div className="font-semibold mb-1">Resumo</div>
 
@@ -706,7 +662,6 @@ const margemOk  = margemPct >= 60;
                     <div>Com desconto (-5%)</div><div className="text-right">R$ {resumo.totalDesc.toFixed(2)}</div>
                     <div>Faturamento (materiais)</div><div className="text-right">R$ {fatMateriais.toFixed(2)}</div>
 
-                    {/* Margem de lucro (mesmo visual do orçamento) */}
                     <div className="col-span-2 flex items-center justify-between font-bold mt-1">
                       <span className={margemOk ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]" : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"}>
                         Margem de Lucro
@@ -725,10 +680,9 @@ const margemOk  = margemPct >= 60;
                   </div>
                 )}
 
-                {/* Pós-aprovação */}
                 {o.status === "Aprovado" && (
                   <div className="mt-3 space-y-3">
-                    {/* Agendar + Concluir lado a lado */}
+
                     <div className="rounded-lg border border-white/10 bg-white/5 p-2">
                       <div className="grid md:grid-cols-2 gap-2 items-start">
                         <div>
@@ -764,7 +718,6 @@ const margemOk  = margemPct >= 60;
                       </div>
                     </div>
 
-                    {/* Nota Fiscal (Emitida à direita) */}
                     <div className="rounded-lg border border-white/10 bg-white/5 p-2">
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
@@ -783,7 +736,6 @@ const margemOk  = margemPct >= 60;
                       </div>
                     </div>
 
-                    {/* Pagamento + valor */}
                     <div className="rounded-lg border border-white/10 bg-white/5 p-2">
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-slate-300">Pago?</span>
@@ -832,13 +784,6 @@ const margemOk  = margemPct >= 60;
   );
 }
 
-
-
-/* =========================
-   Gerencial / Realizar / Precificação
-   (seções abaixo permanecem iguais ao seu arquivo, apenas corrigi pequenas
-    inconsistências menores de tipagem/espaçamento quando necessário)
-========================= */
 function Gerencial({ itens, prices }:{ itens:any[]; prices:Prices }){
   const m = React.useMemo(()=>{
     const out = { total:0, faturamento:0, aprovados:0, pagos:0, pagoValor:0, nota15:0, desc5:0, sem:0, agendados:0, cobreM:0, ppM:0, corrM:0, caixas:0, drenos:0 } as any;
@@ -852,7 +797,7 @@ function Gerencial({ itens, prices }:{ itens:any[]; prices:Prices }){
         const spec = BTU_OPTIONS.find(b => b.label===p.btu) || BTU_OPTIONS[0];
         const mtrs = Number(p.metros||0);
         const ppm = Number(p.ppMetros||0);
-        out.cobreM += mtrs*2; // L + S
+        out.cobreM += mtrs*2;
         out.ppM += ppm;
         if(p.corrugada) out.corrM += mtrs;
         if(p.caixa) out.caixas += 1;
@@ -910,17 +855,6 @@ function Gerencial({ itens, prices }:{ itens:any[]; prices:Prices }){
   );
 }
 
-/* =========================
-   RealizarOrcamento / Precificacao
-   (mantidos como no seu arquivo original – sem alterações funcionais)
-========================= */
-// ...  >>>>>>  AQUI FICA EXATAMENTE O SEU BLOCO ORIGINAL DE
-// RealizarOrcamento E PRECIFICACAO (o mesmo que você já enviou).
-// Para não estourar a mensagem aqui, mantive intactos — você pode
-// colar seu conteúdo original desses dois componentes abaixo desta
-// linha, sem mudanças.  <<<<<<
-
-
 const RFQ_TYPES = [
   { id: "infra", label: "Infra Estrutura Ar Condicionado" },
   { id: "instalacao", label: "Instalação de Ar Condicionado" },
@@ -936,13 +870,9 @@ function RealizarOrcamento({ prices, onSave }:{ prices:Prices; onSave:(orc:any)=
   const [telefone, setTelefone] = useState("");
   const [obs, setObs] = useState("");
 
-  // ✅ Seleção única
   const toggleTipo = (id: string) => setTiposSelecionados([id]);
 
-  // ✅ Sempre pega o único selecionado
   const selectedTipo = tiposSelecionados[0] || null;
-
-
 
   const addPonto = () => setPontos(prev => ([...prev, {
     id: cryptoId(), nome: `Ponto ${prev.length + 1}`, btu: BTU_OPTIONS[0].label,
@@ -952,7 +882,7 @@ function RealizarOrcamento({ prices, onSave }:{ prices:Prices; onSave:(orc:any)=
   const removePonto = (id:string) => setPontos(p => p.filter(pt => pt.id!==id));
 
 const totais = useMemo(() => {
-  
+
   let total=0, totalCobre=0, totalIsol=0, totalPP=0, totalMO=0, totalCorr=0, totalCx=0, totalDreno=0, totalFita=0, totalFat=0;
 
   pontos.forEach(p => {
@@ -960,11 +890,9 @@ const totais = useMemo(() => {
   const metros = Number(p.metros ?? 0);
   const ppM    = Number(p.ppMetros ?? 0);
 
-  // Fita
   const fita    = metros * Number(prices.fitaPVC ?? 0);
   const fitaFat = metros * (Number(prices.fitaPVC ?? 0) - Number(prices.custoFitaPVC ?? 0));
 
-  // Cobre/isol
   const cobrePM = pricePerMeterCobre(spec.l, prices) + pricePerMeterCobre(spec.s, prices);
   const isolPM  = pricePerMeterIsol(spec.l, prices)  + pricePerMeterIsol(spec.s, prices);
   const cobreCM = costPerMeterCobre(spec.l, prices)  + costPerMeterCobre(spec.s, prices);
@@ -985,20 +913,15 @@ const totais = useMemo(() => {
   const cxFat    = p.caixa ? (Number(prices.caixa ?? 0) - Number(prices.custoCaixa ?? 0)) : 0;
   const drFat    = p.dreno ? (Number(prices.dreno ?? 0) - Number(prices.custoDreno ?? 0)) : 0;
 
-  // Acumuladores por categoria
   totalCobre += cobre; totalIsol += isol; totalPP += pp; totalMO += mo;
   totalCorr  += corr;  totalCx   += cx;   totalDreno += dr; totalFita += fita;
 
-  // SOMA FINAL: apenas uma vez, já incluindo a fita
   total    += cobre + isol + pp + mo + corr + cx + dr + fita;
   totalFat += cobreFat + isolFat + ppFat + corrFat + cxFat + drFat + fitaFat;
 });
 
-
   const toggleTipo = (id: string) => setTiposSelecionados([id]);
 
-
-  // 👇 AQUI entram as variáveis novas
   const qtdPontos = pontos.length;
   const avgTotal = qtdPontos ? total / qtdPontos : 0;
   const avgNota  = qtdPontos ? (total * 1.15) / qtdPontos : 0;
@@ -1015,12 +938,9 @@ return {
 
 const { qtdPontos, avgTotal, avgNota, avgDesc } = totais;
 
-
-
 const salvar = () => {
   const resumo = computeResumo(pontos, prices);
 
-  // descrição legível por ponto
   const descricao = pontos.map((p, i) => {
     const spec = BTU_OPTIONS.find(b => b.label === p.btu) || BTU_OPTIONS[0];
     const extras: string[] = [];
@@ -1043,24 +963,23 @@ const salvar = () => {
     cliente,
     local,
     tipos: tiposSelecionados.map(t => RFQ_TYPES.find(x => x.id === t)?.label || t),
-    descricao,                // <-- novo
+    descricao,
     infra: { pontos },
     total: resumo.total,
     status: "Pendente",
     agendamento: null,
     pagamentoTipo: null,
-    pago: false,              // <-- começa como não pago
+    pago: false,
     pagoValor: null,
     _resumo: resumo,
   });
 };
 
-
   return (
     <div className="space-y-6">
 
 <div className="grid md:grid-cols-[2fr_220px] gap-3">
-  {/* Inputs */}
+
   <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
     <div className="grid md:grid-cols-3 gap-3">
       <div>
@@ -1092,7 +1011,6 @@ const salvar = () => {
       </div>
     </div>
 
-    {/* Observações embaixo */}
     <div className="mt-3">
       <label className="text-xs text-slate-400">Observações</label>
       <textarea
@@ -1104,9 +1022,8 @@ const salvar = () => {
     </div>
   </div>
 
-{/* Botões */}
 <div className="rounded-2xl border border-white/10 bg-white/5 p-4 flex flex-col gap-2 items-end justify-start w-[220px]">
-  {/* Salvar orçamento (pulso verde) */}
+
   <button
     onClick={salvar}
     className="px-6 py-2 rounded-xl font-semibold w-full text-white
@@ -1116,7 +1033,6 @@ const salvar = () => {
     Salvar orçamento
   </button>
 
-  {/* Limpar (mais escuro, sem pulso) */}
   <button
     onClick={() => {
       setCliente("");
@@ -1136,8 +1052,8 @@ const salvar = () => {
 <style>
 {`
   @keyframes pulse-green {
-    0%, 100% { background-color: rgb(5, 150, 105); }   /* emerald-600 */
-    50%       { background-color: rgb(16, 185, 129); } /* emerald-500 */
+    0%, 100% { background-color: rgb(5, 150, 105); }
+    50%       { background-color: rgb(16, 185, 129); }
   }
   .animate-pulse-green {
     animation: pulse-green 1.8s ease-in-out infinite;
@@ -1147,15 +1063,12 @@ const salvar = () => {
 
 </div>
 
-
-
 <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
   <div className="flex items-center justify-between mb-2">
     <h3 className="text-lg font-extrabold">Selecionar tipo(s) de orçamento</h3>
     <span className="text-xs text-slate-400">Marque um ou mais</span>
   </div>
 
-  {/* 1 col (xs), 2 (sm+), 3 (xl+), 4 (2xl+) */}
   <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
     {RFQ_TYPES.map((t) => {
       const active = tiposSelecionados.includes(t.id);
@@ -1196,7 +1109,6 @@ const salvar = () => {
     })}
   </div>
 
-  {/* Ripple/pulso só para estes chips */}
   <style>{`
     .rfq-chip{ -webkit-tap-highlight-color: transparent; }
     .rfq-chip::after{
@@ -1222,307 +1134,120 @@ const salvar = () => {
   `}</style>
 </div>
 
-
-
-
-
-
-
-      
-
       {tiposSelecionados.length===0 && (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center text-slate-300">Selecione o tipo de orçamento para começar.</div>
       )}
 
-
-
-
-
-
-
-
-      
-{selectedTipo === "instalacao" && (
+{ /* [REALIZAR > INSTALAÇÃO] Mesmas ferramentas do INFRA */ selectedTipo === "instalacao" && (
   <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
     <div className="mb-3">
       <h3 className="text-lg font-extrabold">Instalação — Pontos</h3>
-      <p className="text-xs text-slate-400">
-        Mesmo formulário do Infra (BTU define diâmetros, etc.), mas sem opções
-        de <b>Corrugada</b> e <b>Caixa POP</b>.
-      </p>
+      <p className="text-xs text-slate-400">Selecione os pontos.</p>
     </div>
 
-    {/* botão adicionar ponto */}
     <div className="flex items-center gap-2 mb-3">
-      <button
-        onClick={addPonto}
-        className="w-full rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 py-2 flex items-center justify-center gap-2"
-      >
-        <Plus className="w-4 h-4" /> Adicionar ponto
-      </button>
+      <div id="inst-add-wrap" className="relative w-full">
+        <button
+          onClick={() => {
+            const el = document.getElementById("inst-add-wrap");
+            el?.classList.add("delta-pos");
+            setTimeout(() => el?.classList.remove("delta-pos"), 380);
+            addPonto();
+          }}
+          className="btn-cta relative z-10 w-full rounded-[26px] border border-white/10 bg-white/5 hover:bg-white/10 py-3 flex items-center justify-center gap-2 shadow-sm overflow-hidden"
+        >
+
+          <span className="btn-ring" aria-hidden></span>
+
+          <span className="btn-flash" aria-hidden></span>
+
+          <span className="delta-left" aria-hidden></span>
+
+          <span className="btn-text">Adicionar ponto</span>
+
+          {pontos.length > 0 && (
+            <span className="badge-count">
+              <span className="badge-num">{pontos.length}</span>
+            </span>
+          )}
+        </button>
+      </div>
     </div>
+
+    <style>{`
+      @keyframes btnSlide{0%{background-position:0% 50%}100%{background-position:-200% 50%}}
+
+      .btn-ring{
+        position:absolute; inset:0; border-radius:26px; pointer-events:none;
+        background: linear-gradient(90deg,#22c55e,#0ea5e9,#8b5cf6,#22c55e);
+        background-size:200% 100%; animation: btnSlide 8s linear infinite;
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor; mask-composite: exclude; padding:2px;
+      }
+      .btn-cta{ transition: transform .06s ease }
+      .btn-cta:active{ transform: scale(.985) }
+      .btn-flash{
+        position:absolute; inset:0; border-radius:26px; pointer-events:none;
+        background: linear-gradient(90deg,#22c55e,#0ea5e9,#8b5cf6,#22c55e);
+        background-size:200% 100%; opacity:0;
+      }
+      .btn-cta:active .btn-flash{ opacity:.22; animation: btnFlash .30s linear }
+      .btn-cta:active .btn-ring{ animation: btnFlash .30s linear }
+      @keyframes btnFlash{0%{background-position:0% 50%}100%{background-position:-200% 50%}}
+
+      .btn-text{ color:#fff; font-weight:600; white-space:nowrap; animation: btnGlow 1.8s ease-in-out infinite }
+      @keyframes btnGlow{
+        0%,100%{ text-shadow:0 0 0 rgba(255,255,255,0) }
+        50%{ text-shadow:0 0 8px rgba(255,255,255,.45), 0 0 16px rgba(255,255,255,.25) }
+      }
+
+      .badge-count{
+        position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+      }
+      .badge-num{
+        font-weight:600; font-size:.9rem; color:rgba(255,255,255,.4);
+        animation: badgeGlow 1.8s ease-in-out infinite;
+      }
+      @keyframes badgeGlow{
+        0%,100%{ text-shadow:0 0 0 rgba(255,255,255,0) }
+        50%{ text-shadow:0 0 6px rgba(255,255,255,.5), 0 0 12px rgba(255,255,255,.25) }
+      }
+
+      .delta-left{
+        position:absolute; left:12px; top:50%; transform:translateY(-50%) scale(.6);
+        width:22px; height:14px; border-radius:9999px; border:1px solid transparent;
+        opacity:0; pointer-events:none;
+      }
+
+      #inst-add-wrap.delta-pos .delta-left{
+        background: rgba(16,185,129,.18);
+        border-color: rgba(16,185,129,.55);
+        opacity:1; animation: bubblePop .35s ease-out;
+      }
+      #inst-add-wrap.delta-pos .delta-left::after{
+        content:'+'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+        font-size:11px; color:#10b981; filter: drop-shadow(0 0 6px rgba(16,185,129,.35));
+      }
+
+      #inst-add-wrap.delta-neg .delta-left{
+        background: rgba(239,68,68,.18);
+        border-color: rgba(239,68,68,.55);
+        opacity:1; animation: bubblePop .35s ease-out;
+      }
+      #inst-add-wrap.delta-neg .delta-left::after{
+        content:'−'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+        font-size:11px; color:#ef4444; filter: drop-shadow(0 0 6px rgba(239,68,68,.35));
+      }
+
+      @keyframes bubblePop{
+        0%{ transform:translateY(-50%) scale(.6); opacity:0 }
+        60%{ transform:translateY(-50%) scale(1.1); opacity:1 }
+        100%{ transform:translateY(-50%) scale(1); opacity:1 }
+      }
+    `}</style>
 
     <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-3">
-      {pontos.map((p) => {
-        const spec = BTU_OPTIONS.find(b => b.label===p.btu) || BTU_OPTIONS[0];
-        const mtrs = Number(p.metros ?? 0);
-        const ppm  = Number(p.ppMetros ?? 0);
 
-        // mesmos preços/unidades do bloco de Infra
-        const cobrePM = pricePerMeterCobre(spec.l, prices) + pricePerMeterCobre(spec.s, prices);
-        const isolPM  = pricePerMeterIsol(spec.l, prices) + pricePerMeterIsol(spec.s, prices);
-        const cobreCM = costPerMeterCobre(spec.l, prices) + costPerMeterCobre(spec.s, prices);
-        const isolCM  = costPerMeterIsol(spec.l, prices) + costPerMeterIsol(spec.s, prices);
-
-        const corr  = 0;            // <- sem corrugada aqui
-        const cx    = 0;            // <- sem caixa POP aqui
-        const dr    = p.dreno ? Number(prices.dreno ?? 0) : 0;
-        const mo    = (p.maoObraOutro ?? p.maoObra) || 0;
-
-        const materiais = mtrs*cobrePM + mtrs*isolPM + ppm*Number(prices.pp ?? 0) + dr; // sem corr/cx
-        const sub      = materiais + mo;
-        const subNota  = sub * 1.15;
-        const subDesc  = sub * 0.95;
-        const valorFita = mtrs * Number(prices.fitaPVC ?? 0);  
-        const fatCobre = mtrs*(cobrePM - cobreCM);
-        const fatIsol  = mtrs*(isolPM - isolCM);
-        const fatPP    = ppm*(Number(prices.pp ?? 0) - Number(prices.custoPP ?? 0));
-        
-        const fatDr    = p.dreno ? (Number(prices.dreno ?? 0) - Number(prices.custoDreno ?? 0)) : 0;
-        const fatTot   = fatCobre + fatIsol + fatPP + fatDr;
-
-        return (
-          <div key={p.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <input
-                value={p.nome}
-                onChange={(e)=>updatePonto(p.id,{ nome: (e.target as HTMLInputElement).value })}
-                className="text-sm font-semibold bg-white/5 border border-white/10 rounded-lg px-2 py-1 w-[70%]"
-              />
-              <button
-                onClick={()=>removePonto(p.id)}
-                className="rounded-lg px-2 py-1 bg-white/5 hover:bg-white/10 text-slate-300 flex items-center gap-1 border border-white/10"
-                title="remover ponto"
-              >
-                <Trash2 className="w-3 h-3"/> remover
-              </button>
-            </div>
-
-            <label className="block text-sm font-semibold mt-1">BTU / Capacidade</label>
-            <select
-              value={p.btu}
-              onChange={(e)=>updatePonto(p.id,{ btu:e.target.value })}
-              className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-[15px]"
-            >
-              {BTU_OPTIONS.map(b => <option key={b.label} value={b.label}>{b.label}</option>)}
-            </select>
-            <div className="mt-1 text-xs text-slate-400">Diâmetros: Líquido {spec.l} • Sucção {spec.s}</div>
-
-            {/* Metros / PP */}
-            <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-                <div className="text-[11px] text-slate-400">Metros de cobre</div>
-                <input
-                  type="number" min={0} max={100}
-                  value={Number.isFinite(p.metros)?p.metros:0}
-                  onChange={(e)=>{
-                    const val = parseFloat((e.target as HTMLInputElement).value);
-                    updatePonto(p.id,{ metros: Number.isFinite(val)? Math.max(0, Math.min(100, val)) : 0 });
-                  }}
-                  className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1"
-                />
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-                <div className="text-[11px] text-slate-400">Cabo PP (m) — pode ajustar</div>
-                <input
-                  type="number" min={0} max={200}
-                  value={Number.isFinite(p.ppMetros)?p.ppMetros:0}
-                  onChange={(e)=>{
-                    const val = parseFloat((e.target as HTMLInputElement).value);
-                    updatePonto(p.id,{ ppMetros: Number.isFinite(val)? Math.max(0, Math.min(200, val)) : 0 });
-                  }}
-                  className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1"
-                />
-              </div>
-            </div>
-
-            {/* Cards de valores (cobre/isol/PP) */}
-            <div className="grid grid-cols-3 gap-2 mt-3 text-sm">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-                <div className="text-[11px] text-slate-400">Cobre {spec.l} - {spec.s}</div>
-                <div className="font-bold">R$ {(mtrs * cobrePM).toFixed(2)}</div>
-                <div className="text-[11px] text-slate-400">(R$ {cobrePM.toFixed(2)}/m)</div>
-              </div>
-
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-                <div className="text-[11px] text-slate-400">Isolamento</div>
-                <div className="font-bold">R$ {(mtrs * isolPM).toFixed(2)}</div>
-                <div className="text-[11px] text-slate-400">(R$ {isolPM.toFixed(2)}/m)</div>
-              </div>
-
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-                <div className="text-[11px] text-slate-400">Cabo PP</div>
-                <div className="font-bold">R$ {(ppm * Number(prices.pp ?? 0)).toFixed(2)}</div>
-                <div className="text-[11px] text-slate-400">(R$ {(Number(prices.pp ?? 0)).toFixed(2)}/m)</div>
-              </div>
-
-              {/* Dreno — ÚNICO extra aqui */}
-              <button
-                onClick={()=>updatePonto(p.id,{ dreno: !p.dreno })}
-                className={`rounded-xl border px-2 py-2 ${p.dreno ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
-              >
-                <div className="font-semibold">Dreno</div>
-                <div>{p.dreno ? `+ R$ ${Number(prices.dreno || 0).toFixed(2)}` : '_____'} </div>
-                <div className="text-[11px] text-slate-400">por ponto</div>
-              </button>
-            </div>
-
-            {/* Mão de obra (igual ao Infra) */}
-            <div className="mt-3 text-sm">
-              <div className="text-[11px] text-slate-400 mb-1">Mão de obra (por ponto)</div>
-              <div className="grid grid-cols-4 gap-2">
-                <button
-                  onClick={()=>updatePonto(p.id,{ maoObra: 300, maoObraOutro: undefined })}
-                  className={`rounded-xl border px-2 py-2 ${p.maoObra===300 && p.maoObraOutro===undefined ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
-                >Nível 1<br/>R$ 300,00</button>
-                <button
-                  onClick={()=>updatePonto(p.id,{ maoObra: 350, maoObraOutro: undefined })}
-                  className={`rounded-xl border px-2 py-2 ${p.maoObra===350 && p.maoObraOutro===undefined ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
-                >Nível 2<br/>R$ 350,00</button>
-                <button
-                  onClick={()=>updatePonto(p.id,{ maoObra: 400, maoObraOutro: undefined })}
-                  className={`rounded-xl border px-2 py-2 ${p.maoObra===400 && p.maoObraOutro===undefined ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
-                >Nível 3<br/>R$ 400,00</button>
-                <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-center">
-                  <div className="text-[11px] text-slate-400">Outro</div>
-                  <input
-                    type="number" min={0} step={10}
-                    value={p.maoObraOutro ?? ''} placeholder="R$"
-                    className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1"
-                    onChange={(e)=>{
-                      const v = parseFloat((e.target as HTMLInputElement).value);
-                      if(Number.isFinite(v)) updatePonto(p.id,{ maoObraOutro: v, maoObra: v });
-                      else updatePonto(p.id,{ maoObraOutro: undefined });
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Subtotais (igual) */}
-            <div className="mt-3 rounded-xl border border-white/10 bg-white/5 p-2 text-sm">
-              <div className="flex items-center justify-between">
-                <span>Subtotal</span><b>R$ {sub.toFixed(2)}</b>
-              </div>
-              <div className="flex items-center justify-between text-emerald-300/90">
-                <span>Com Nota (+15%)</span><b>R$ {subNota.toFixed(2)}</b>
-              </div>
-              <div className="flex items-center justify-between text-sky-300/90">
-                <span>Com desconto (-5%)</span><b>R$ {subDesc.toFixed(2)}</b>
-              </div>
-
-              <div className="mt-2 border-t border-white/10 pt-2 flex items-center justify-between text-amber-200">
-                <span>Lucro (materiais)</span><b>R$ {fatTot.toFixed(2)}</b>
-              </div>
-              <div className="flex items-center justify-between text-amber-300">
-                <span>Mão de obra</span><b>R$ {mo.toFixed(2)}</b>
-              </div>
-              <div className="flex items-center justify-between text-amber-400 font-bold">
-                <span>Total Lucro + Mão de obra</span><b>R$ {(fatTot + mo).toFixed(2)}</b>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-    {/* Painel de totais (igual ao Infra) */}
-<div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
-
-  {/* Pontos = N (fica à esquerda) */}
-  <div className="mr-auto text-sm">
-    Pontos: <b>{totais.qtdPontos}</b>
-  </div>
-
-  <div className="text-sm">Cobre: <b>R$ {totais.totalCobre.toFixed(2)}</b></div>
-  <div className="text-sm">Isolamento: <b>R$ {totais.totalIsol.toFixed(2)}</b></div>
-  <div className="text-sm">Cabo PP: <b>R$ {totais.totalPP.toFixed(2)}</b></div>
-  <div className="text-sm">Corrugada: <b>R$ {totais.totalCorr.toFixed(2)}</b></div>
-  <div className="text-sm">Caixa POP: <b>R$ {totais.totalCx.toFixed(2)}</b></div>
-  <div className="text-sm">Dreno: <b>R$ {totais.totalDreno.toFixed(2)}</b></div>
-  <div className="text-sm">Mão de obra: <b>R$ {totais.totalMO.toFixed(2)}</b></div>
-
-  <div className="w-full h-0" />
-
-  <div className="text-lg font-extrabold">Total: R$ {totais.total.toFixed(2)}</div>
-  <div className="text-lg font-extrabold text-emerald-300/90">Com Nota (+15%): R$ {totais.totalNota.toFixed(2)}</div>
-  <div className="text-lg font-extrabold text-sky-300/90">Com desconto (-5%): R$ {totais.totalDesc.toFixed(2)}</div>
-
-  {/* Média por ponto – só quando houver 2+ pontos */}
-  {totais.qtdPontos > 1 && (
-    <>
-      <div className="w-full border-t border-white/10 my-1" />
-      <div className="text-sm text-slate-300">Média por ponto:</div>
-      <div className="text-sm font-extrabold">Subtotal: R$ {totais.avgTotal.toFixed(2)}</div>
-      <div className="text-sm font-extrabold text-emerald-300/90">Com Nota: R$ {totais.avgNota.toFixed(2)}</div>
-      <div className="text-sm font-extrabold text-sky-300/90">Com desconto: R$ {totais.avgDesc.toFixed(2)}</div>
-    </>
-  )}
-
-  <div className="w-full h-0" />
-
-  <div className="text-lg font-extrabold text-amber-200">
-    Lucro (materiais): R$ {totais.totalFat.toFixed(2)}
-  </div>
-  <div className="text-lg font-extrabold text-amber-300">
-    Mão de obra: R$ {totais.totalMO.toFixed(2)}
-  </div>
-  <div className="text-lg font-extrabold text-amber-400">
-    Total Lucro + Mão de obra: R$ {(totais.totalFat + totais.totalMO).toFixed(2)}
-  </div>
-
-  <div
-    className={`text-lg font-extrabold ${
-      totais.total > 0
-        ? ((totais.totalFat + totais.totalMO) / totais.total) * 100 >= 60
-          ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
-          : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-        : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-    }`}
-  >
-    Margem de Lucro:{" "}
-    {totais.total > 0
-      ? `${(((totais.totalFat + totais.totalMO) / totais.total) * 100).toFixed(2)}%`
-      : "0%"}
-  </div>
-</div>
-
-  </div>
-  
-)}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      {tiposSelecionados.includes("infra") && (
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-          <div className="mb-3"><h3 className="text-lg font-extrabold">Infra Estrutura — Pontos</h3><p className="text-xs text-slate-400"> Selecione os pontos.</p></div>
-          <div className="flex items-center gap-2 mb-3"><button onClick={addPonto} className="w-full rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 py-2 flex items-center justify-center gap-2"><Plus className="w-4 h-4"/> Adicionar ponto</button></div>
-
-          <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-3">
 {pontos.map((p) => {
   const spec = BTU_OPTIONS.find(b => b.label===p.btu) || BTU_OPTIONS[0];
   const cobrePM = pricePerMeterCobre(spec.l, prices) + pricePerMeterCobre(spec.s, prices);
@@ -1538,7 +1263,6 @@ const salvar = () => {
   const dr   = p.dreno ? Number(prices.dreno ?? 0) : 0;
   const mo   = (p.maoObraOutro ?? p.maoObra) || 0;
 
-  // ✅ incluir a fita no subtotal
   const valorFita = mtrs * Number(prices.fitaPVC ?? 0);
 
   const materiais =
@@ -1546,7 +1270,7 @@ const salvar = () => {
     mtrs * isolPM +
     ppm  * Number(prices.pp ?? 0) +
     corr + cx + dr +
-    valorFita; // << aqui entra a fita
+    valorFita;
 
   const sub     = materiais + mo;
   const subNota = sub * 1.15;
@@ -1563,7 +1287,7 @@ const salvar = () => {
   const fatTot   = fatCobre + fatIsol + fatPP + fatPVC + fatCor + fatCx + fatDr;
 
               return (
-                <div key={p.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <motion.div key={p.id} layout variants={PONTO_VARIANTS} initial="initial" animate="animate" transition={{ type: "spring", stiffness: 320, damping: 26 }} className="rounded-2xl border border-white/10 bg-white/5 p-3">
                   <div className="flex items-center justify-between mb-2">
                     <input
                       value={p.nome}
@@ -1579,17 +1303,15 @@ const salvar = () => {
                   </select>
                   <div className="mt-1 text-xs text-slate-400">Tubulação {spec.l} e  {spec.s}</div>
 
-                  {/* Adicionais (acima de mão de obra e subtotal). Mostra "_____" quando desativado */}
                   <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
                   </div>
 
-    {/* Metros / PP — responsivo, valor à esquerda e botões à direita */}
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-sm">
-  {/* Metros de Cobre */}
+
   <div className="rounded-xl border border-white/10 bg-white/5 p-2">
     <div className="text-[11px] text-slate-400">Metros de Cobre</div>
     <div className="mt-1 flex items-center gap-2 sm:gap-3 step-controls">
-      {/* valor (pill curto) */}
+
       <div className="value-wrap relative shrink-0">
         <input
           type="number"
@@ -1607,7 +1329,6 @@ const salvar = () => {
         <span className="ghost ghost-plus">+</span>
       </div>
 
-      {/* – / + (sempre colado na direita) */}
       <div className="flex items-center gap-2 ml-auto shrink-0">
         <button
           type="button"
@@ -1641,7 +1362,6 @@ const salvar = () => {
     </div>
   </div>
 
-  {/* Cabo PP (m) */}
   <div className="rounded-xl border border-white/10 bg-white/5 p-2">
     <div className="text-[11px] text-slate-400">Cabo PP (m)</div>
     <div className="mt-1 flex items-center gap-2 sm:gap-3 step-controls">
@@ -1701,7 +1421,6 @@ const salvar = () => {
   @keyframes pulseUp   { 0%{transform:scale(1)} 40%{transform:scale(1.06)} 100%{transform:scale(1)} }
   @keyframes pulseDown { 0%{transform:scale(1)} 40%{transform:scale(.95)} 100%{transform:scale(1)} }
 
-  /* ===== botões ===== */
   .btn-step{
     position:relative; overflow:visible;
     width:2rem; height:2rem;
@@ -1736,7 +1455,6 @@ const salvar = () => {
   }
   .btn-step:disabled{ opacity:.45; cursor:not-allowed; }
 
-  /* ===== valor (pill curto) ===== */
   .value-pill{
     width:68px; padding:.35rem .55rem;
     border-radius:.6rem;
@@ -1754,7 +1472,6 @@ const salvar = () => {
     animation:pulseDown .28s ease-out; color:#fecaca; box-shadow:0 0 0 2px rgba(239,68,68,.35) inset;
   }
 
-  /* símbolos “fantasmas” ao lado do valor enquanto pressiona */
   .ghost{
     position:absolute; left:calc(100% + .35rem); top:50%;
     transform:translateY(-50%) scale(.9);
@@ -1767,39 +1484,19 @@ const salvar = () => {
   .step-controls:has(.btn-step[data-variant="plus"]:active) .ghost-plus{ opacity:1; transform:translateY(-50%) scale(1.05); }
   .step-controls:has(.btn-step[data-variant="minus"]:active) .ghost-minus{ opacity:1; transform:translateY(-50%) scale(1.05); }
 
-  /* ===== responsividade (mobile) ===== */
   @media (max-width: 420px){
     .btn-step{ width:1.75rem; height:1.75rem; }
     .value-pill{ width:56px; font-size:1rem; }
-    /* animação morde menos pra não invadir o card ao lado */
+
     .btn-step:active .flash{ inset:-2px; border-radius:calc(.5rem + 2px); }
     .btn-step:active::before{ inset:-6px; }
   }
 
-  /* esconder setas do number */
   .no-spin::-webkit-outer-spin-button,.no-spin::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
   .no-spin{ -moz-appearance:textfield; }
 `}</style>
 
-
-                  {/* <div className="grid grid-cols-4 gap-2 mt-3 text-sm">
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-2"><div className="text-[11px] text-slate-400">Cobre — L {spec.l} + S {spec.s}</div><div className="font-bold">R$ {(mtrs * cobrePM).toFixed(2)}</div><div className="text-[11px] text-slate-400">(R$ {cobrePM.toFixed(2)}/m)</div></div>
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-2"><div className="text-[11px] text-slate-400">Isolamento</div><div className="font-bold">R$ {(mtrs * isolPM).toFixed(2)}</div><div className="text-[11px] text-slate-400">(R$ {isolPM.toFixed(2)}/m)</div></div>
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-2"><div className="text-[11px] text-slate-400">Cabo PP</div><div className="font-bold">R$ {(ppm * Number(prices.pp ?? 0)).toFixed(2)}</div><div className="text-[11px] text-slate-400">(R$ {(Number(prices.pp ?? 0)).toFixed(2)}/m)</div></div>
-                    <div className="rounded-xl border border-white/10 bg-white/5 p-2"><div className="text-[11px] text-slate-400">Corrugada</div><div className="font-bold">R$ {(p.corrugada ? (mtrs * corrugadaVendaPM(spec, prices)) : 0).toFixed(2)}</div><div className="text-[11px] text-slate-400">(R$ {corrugadaVendaPM(spec, prices).toFixed(2)}/m)</div></div>
-                  </div> */}
                   <div className="grid grid-cols-3 gap-2 mt-3 text-sm">
-
-
-
-
-  {/* Cobre */}
-
-  {/* <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-    <div className="text-[11px] text-slate-400">Cobre — L {spec.l} + S {spec.s}</div>
-    <div className="font-bold">R$ {(mtrs * cobrePM).toFixed(2)}</div>
-    <div className="text-[11px] text-slate-400">(R$ {cobrePM.toFixed(2)}/m)</div>
-  </div> */}
 
   <div className="rounded-xl border border-white/10 bg-white/5 p-2">
   <div className="text-[11px] text-slate-400">
@@ -1809,28 +1506,16 @@ const salvar = () => {
   <div className="font-bold">R$ {(mtrs * cobrePM).toFixed(2)}</div>
 
   <div className="text-[11px] text-slate-400">(R$ {cobrePM.toFixed(2)}/m)</div>
-  
-  
 
-  {/* Detalhamento só no finalzinho */}
   <div className="mt-2 text-[11px] text-slate-400 border-t border-white/10 pt-1">
     {spec.l} = R$ {(mtrs * pricePerMeterCobre(spec.l, prices)).toFixed(2)} <br />
     {spec.s} = R$ {(mtrs * pricePerMeterCobre(spec.s, prices)).toFixed(2)}
   </div>
-  {/* Lucro do cobre (rodapé do card) */}
+
 <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
   Lucro: <b className="text-amber-200">R$ {fatCobre.toFixed(2)}</b>
 </div>
 </div>
-
-
-
-  {/* Isolamento */}
-  {/* <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-    <div className="text-[11px] text-slate-400">Isolamento</div>
-    <div className="font-bold">R$ {(mtrs * isolPM).toFixed(2)}</div>
-    <div className="text-[11px] text-slate-400">(R$ {isolPM.toFixed(2)}/m)</div>
-  </div> */}
 
   <div className="rounded-xl border border-white/10 bg-white/5 p-2">
   <div className="text-[11px] text-slate-400">Isolamento</div>
@@ -1839,43 +1524,32 @@ const salvar = () => {
 
   <div className="text-[11px] text-slate-400">(R$ {isolPM.toFixed(2)}/m)</div>
 
-  {/* Detalhamento igual ao cobre */}
   <div className="mt-2 text-[11px] text-slate-400 border-t border-white/10 pt-1">
     {spec.l} = R$ {(mtrs * pricePerMeterIsol(spec.l, prices)).toFixed(2)} <br />
     {spec.s} = R$ {(mtrs * pricePerMeterIsol(spec.s, prices)).toFixed(2)}
   </div>
-  {/* Lucro do isolamento (rodapé do card) */}
+
 <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
   Lucro: <b className="text-amber-200">R$ {fatIsol.toFixed(2)}</b>
 </div>
 </div>
 
-
-{/* Cabo PP */}
 <div className="rounded-xl border border-white/10 bg-white/5 p-2">
   <div className="text-[11px] text-slate-400">Cabo PP</div>
   <div className="font-bold">R$ {(ppm * Number(prices.pp ?? 0)).toFixed(2)}</div>
   <div className="text-[11px] text-slate-400">(R$ {(Number(prices.pp ?? 0)).toFixed(2)}/m)</div>
-  
 
-  {/* Fita PVC (inline dentro do mesmo card) */}
   <div className="mt-2 border-t border-white/10 pt-1">
     <div className="text-[11px] text-slate-400">Fita PVC</div>
     <div className="font-bold">R$ {(mtrs * Number(prices.fitaPVC ?? 0)).toFixed(2)}</div>
-    {/* <div className="text-[11px] text-slate-400">(R$ {(Number(prices.fitaPVC ?? 0)).toFixed(2)}/m)</div> */}
-    
+
 <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
   Lucro: <b className="text-amber-200">R$ {(fatPP + fatPVC).toFixed(2)}</b>
 </div>
   </div>
-  
+
 </div>
 
-
-
-  
-
-  {/* Corrugada */}
   <button
     onClick={()=>updatePonto(p.id,{ corrugada: !p.corrugada })}
     className={`rounded-xl border px-2 py-2 ${p.corrugada ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
@@ -1883,7 +1557,7 @@ const salvar = () => {
     <div className="font-semibold">Corrugada</div>
     <div>{p.corrugada ? `+ R$ ${(mtrs * corrugadaVendaPM(spec, prices)).toFixed(2)}` : '_____'} </div>
     <div className="text-[11px] text-slate-400">{`R$ ${corrugadaVendaPM(spec, prices).toFixed(2)}/m`}</div>
-      {/* Lucro */}
+
   {p.corrugada && (
     <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
       Lucro: <b className="text-amber-200">R$ {fatCor.toFixed(2)}</b>
@@ -1891,7 +1565,6 @@ const salvar = () => {
   )}
   </button>
 
-  {/* Caixa POP */}
   <button
     onClick={()=>updatePonto(p.id,{ caixa: !p.caixa })}
     className={`rounded-xl border px-2 py-2 ${p.caixa ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
@@ -1899,7 +1572,7 @@ const salvar = () => {
     <div className="font-semibold">Caixa POP</div>
     <div>{p.caixa ? `+ R$ ${Number(prices.caixa || 0).toFixed(2)}` : '_____'} </div>
     <div className="text-[11px] text-slate-400">por ponto</div>
-      {/* Lucro */}
+
   {p.caixa && (
     <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
       Lucro: <b className="text-amber-200">R$ {fatCx.toFixed(2)}</b>
@@ -1907,7 +1580,6 @@ const salvar = () => {
   )}
   </button>
 
-  {/* Dreno */}
   <button
     onClick={()=>updatePonto(p.id,{ dreno: !p.dreno })}
     className={`rounded-xl border px-2 py-2 ${p.dreno ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
@@ -1915,7 +1587,7 @@ const salvar = () => {
     <div className="font-semibold">Dreno</div>
     <div>{p.dreno ? `+ R$ ${Number(prices.dreno || 0).toFixed(2)}` : '_____'} </div>
     <div className="text-[11px] text-slate-400">por ponto</div>
-      {/* Lucro */}
+
   {p.dreno && (
     <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
       Lucro: <b className="text-amber-200">R$ {fatDr.toFixed(2)}</b>
@@ -1923,25 +1595,6 @@ const salvar = () => {
   )}
   </button>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                   <div className="mt-3 text-sm">
                     <div className="text-[11px] text-slate-400 mb-1">Mão de obra (por ponto)</div>
@@ -2006,10 +1659,6 @@ const salvar = () => {
     <b>R$ {(fatTot + mo).toFixed(2)}</b>
   </div>
 
-
-
-
-
 <div className="flex items-center justify-between font-bold">
   <span
     className={
@@ -2036,90 +1685,19 @@ const salvar = () => {
   </b>
 </div>
 
-
-
-
-
-
-
 </div>
 
-
-
-                </div>
+                </motion.div>
               );
             })}
           </div>
 
-          {/* <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
-          
-            <div className="text-sm">Cobre: <b>R$ {totais.totalCobre.toFixed(2)}</b></div>
-            <div className="text-sm">Isolamento: <b>R$ {totais.totalIsol.toFixed(2)}</b></div>
-            <div className="text-sm">Cabo PP: <b>R$ {totais.totalPP.toFixed(2)}</b></div>
-            <div className="text-sm">Corrugada: <b>R$ {totais.totalCorr.toFixed(2)}</b></div>
-            <div className="text-sm">Caixa POP: <b>R$ {totais.totalCx.toFixed(2)}</b></div>
-            <div className="text-sm">Dreno: <b>R$ {totais.totalDreno.toFixed(2)}</b></div>
-            <div className="text-sm">Mão de obra: <b>R$ {totais.totalMO.toFixed(2)}</b></div>
-            <div className="w-full h-0"/>
-            <div className="text-lg font-extrabold">Total: R$ {totais.total.toFixed(2)}</div>
-            <div className="text-lg font-extrabold text-emerald-300/90">Com Nota (+15%): R$ {totais.totalNota.toFixed(2)}</div>
-            <div className="text-lg font-extrabold text-sky-300/90">Com desconto (-5%): R$ {totais.totalDesc.toFixed(2)}</div>
-<div className="w-full h-0" />
-
-<div className="text-lg font-extrabold text-amber-200">
-  Lucro (materiais): R$ {totais.totalFat.toFixed(2)}
-</div>
-
-<div className="text-lg font-extrabold text-amber-300">
-  Mão de obra: R$ {totais.totalMO.toFixed(2)}
-</div>
-
-<div className="text-lg font-extrabold text-amber-400">
-  Total Lucro + Mão de obra: R$ {(totais.totalFat + totais.totalMO).toFixed(2)}
-</div>
-<div
-  className={`text-lg font-extrabold ${
-    totais.total > 0
-      ? ((totais.totalFat + totais.totalMO) / totais.total) * 100 >= 60
-        ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
-        : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-      : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-  }`}
->
-  Margem de Lucro:{" "}
-  {totais.total > 0
-    ? `${(((totais.totalFat + totais.totalMO) / totais.total) * 100).toFixed(2)}%`
-    : "0%"}
-</div>
-          </div> */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
-  {/* Pontos = N (vai à esquerda) */}
+
   <div className="mr-auto text-sm">
     Pontos: <b>{qtdPontos}</b>
   </div>
-{/* taotaisss */}
-{/* Totais por categoria — grid responsivo */}
+
 <div className="w-full grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 xl:grid-cols-4 gap-1.5">
   {[
     ['Cobre',       totais.totalCobre],
@@ -2143,11 +1721,8 @@ const salvar = () => {
   ))}
 </div>
 
-
-{/* separador */}
 <div className="w-full h-0" />
 
-{/* Totais principais — também em grid, mas com destaque */}
 <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-2">
   <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
     <span className="text-sm">Total</span>
@@ -2169,8 +1744,6 @@ const salvar = () => {
   </div>
 </div>
 
-
-  {/* Média por ponto – aparece só quando houver 2+ pontos */}
   {qtdPontos > 1 && (
     <>
       <div className="w-full border-t border-white/10 my-1" />
@@ -2209,12 +1782,676 @@ const salvar = () => {
   </div>
 </div>
 
+        </div>
+      )}
+
+{tiposSelecionados.includes("infra") && (
+  <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+    <div className="mb-3">
+      <h3 className="text-lg font-extrabold">Infra Estrutura — Pontos</h3>
+      <p className="text-xs text-slate-400">Selecione os pontos.</p>
+    </div>
+
+    <div className="flex items-center gap-2 mb-3">
+      <div id="infra-add-wrap" className="relative w-full">
+        <button
+          onClick={() => {
+            const el = document.getElementById("infra-add-wrap");
+            el?.classList.add("delta-pos");
+            setTimeout(() => el?.classList.remove("delta-pos"), 380);
+            addPonto();
+          }}
+          className="btn-cta relative z-10 w-full rounded-[26px] border border-white/10 bg-white/5 hover:bg-white/10 py-3 flex items-center justify-center gap-2 shadow-sm overflow-hidden"
+        >
+
+          <span className="btn-ring" aria-hidden></span>
+
+          <span className="btn-flash" aria-hidden></span>
+
+          <span className="delta-left" aria-hidden></span>
+
+          <span className="btn-text">Adicionar ponto</span>
+
+          {pontos.length > 0 && (
+            <span className="badge-count">
+              <span className="badge-num">{pontos.length}</span>
+            </span>
+          )}
+        </button>
+      </div>
+    </div>
+
+    <style>{`
+      @keyframes btnSlide{0%{background-position:0% 50%}100%{background-position:-200% 50%}}
+
+      .btn-ring{
+        position:absolute; inset:0; border-radius:26px; pointer-events:none;
+        background: linear-gradient(90deg,#22c55e,#0ea5e9,#8b5cf6,#22c55e);
+        background-size:200% 100%; animation: btnSlide 8s linear infinite;
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor; mask-composite: exclude; padding:2px;
+      }
+      .btn-cta{ transition: transform .06s ease }
+      .btn-cta:active{ transform: scale(.985) }
+      .btn-flash{
+        position:absolute; inset:0; border-radius:26px; pointer-events:none;
+        background: linear-gradient(90deg,#22c55e,#0ea5e9,#8b5cf6,#22c55e);
+        background-size:200% 100%; opacity:0;
+      }
+      .btn-cta:active .btn-flash{ opacity:.22; animation: btnFlash .30s linear }
+      .btn-cta:active .btn-ring{ animation: btnFlash .30s linear }
+      @keyframes btnFlash{0%{background-position:0% 50%}100%{background-position:-200% 50%}}
+
+      .btn-text{ color:#fff; font-weight:600; white-space:nowrap; animation: btnGlow 1.8s ease-in-out infinite }
+      @keyframes btnGlow{
+        0%,100%{ text-shadow:0 0 0 rgba(255,255,255,0) }
+        50%{ text-shadow:0 0 8px rgba(255,255,255,.45), 0 0 16px rgba(255,255,255,.25) }
+      }
+
+      .badge-count{
+        position:absolute; right:1rem; top:50%; transform:translateY(-50%);
+      }
+      .badge-num{
+        font-weight:600; font-size:.9rem; color:rgba(255,255,255,.4);
+        animation: badgeGlow 1.8s ease-in-out infinite;
+      }
+      @keyframes badgeGlow{
+        0%,100%{ text-shadow:0 0 0 rgba(255,255,255,0) }
+        50%{ text-shadow:0 0 6px rgba(255,255,255,.5), 0 0 12px rgba(255,255,255,.25) }
+      }
+
+      .delta-left{
+        position:absolute; left:12px; top:50%; transform:translateY(-50%) scale(.6);
+        width:22px; height:14px; border-radius:9999px; border:1px solid transparent;
+        opacity:0; pointer-events:none;
+      }
+
+      #infra-add-wrap.delta-pos .delta-left{
+        background: rgba(16,185,129,.18);
+        border-color: rgba(16,185,129,.55);
+        opacity:1; animation: bubblePop .35s ease-out;
+      }
+      #infra-add-wrap.delta-pos .delta-left::after{
+        content:'+'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+        font-size:11px; color:#10b981; filter: drop-shadow(0 0 6px rgba(16,185,129,.35));
+      }
+
+      #infra-add-wrap.delta-neg .delta-left{
+        background: rgba(239,68,68,.18);
+        border-color: rgba(239,68,68,.55);
+        opacity:1; animation: bubblePop .35s ease-out;
+      }
+      #infra-add-wrap.delta-neg .delta-left::after{
+        content:'−'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+        font-size:11px; color:#ef4444; filter: drop-shadow(0 0 6px rgba(239,68,68,.35));
+      }
+
+      @keyframes bubblePop{
+        0%{ transform:translateY(-50%) scale(.6); opacity:0 }
+        60%{ transform:translateY(-50%) scale(1.1); opacity:1 }
+        100%{ transform:translateY(-50%) scale(1); opacity:1 }
+      }
+    `}</style>
+
+    <div className="grid md:grid-cols-2 xl:grid-cols-2 gap-3">
+
+
+
+
+
+
+
+
+
+
+
+
+{pontos.map((p) => {
+  const spec = BTU_OPTIONS.find(b => b.label===p.btu) || BTU_OPTIONS[0];
+  const cobrePM = pricePerMeterCobre(spec.l, prices) + pricePerMeterCobre(spec.s, prices);
+  const isolPM  = pricePerMeterIsol(spec.l, prices) + pricePerMeterIsol(spec.s, prices);
+  const cobreCM = costPerMeterCobre(spec.l, prices) + costPerMeterCobre(spec.s, prices);
+  const isolCM  = costPerMeterIsol(spec.l, prices) + costPerMeterIsol(spec.s, prices);
+
+  const mtrs = Number(p.metros ?? 0);
+  const ppm  = Number(p.ppMetros ?? 0);
+
+  const corr = p.corrugada ? mtrs * corrugadaVendaPM(spec, prices) : 0;
+  const cx   = p.caixa ? Number(prices.caixa ?? 0) : 0;
+  const dr   = p.dreno ? Number(prices.dreno ?? 0) : 0;
+  const mo   = (p.maoObraOutro ?? p.maoObra) || 0;
+
+  const valorFita = mtrs * Number(prices.fitaPVC ?? 0);
+
+  const materiais =
+    mtrs * cobrePM +
+    mtrs * isolPM +
+    ppm  * Number(prices.pp ?? 0) +
+    corr + cx + dr +
+    valorFita;
+
+  const sub     = materiais + mo;
+  const subNota = sub * 1.15;
+  const subDesc = sub * 0.95;
+
+  const fatCobre = mtrs*(cobrePM - cobreCM);
+  const fatIsol  = mtrs*(isolPM  - isolCM);
+  const fatPP    = ppm*(Number(prices.pp ?? 0) - Number(prices.custoPP ?? 0));
+  const fatPVC   = mtrs*(Number(prices.fitaPVC ?? 0) - Number(prices.custoFitaPVC ?? 0));
+  const fatCor   = p.corrugada ? mtrs*(corrugadaVendaPM(spec, prices) - corrugadaCustoPM(spec, prices)) : 0;
+  const fatCx    = p.caixa ? (Number(prices.caixa ?? 0) - Number(prices.custoCaixa ?? 0)) : 0;
+  const fatDr    = p.dreno ? (Number(prices.dreno ?? 0) - Number(prices.custoDreno ?? 0)) : 0;
+
+  const fatTot   = fatCobre + fatIsol + fatPP + fatPVC + fatCor + fatCx + fatDr;
+
+              return (
+                <motion.div key={p.id} layout variants={PONTO_VARIANTS} initial="initial" animate="animate" transition={{ type: "spring", stiffness: 320, damping: 26 }} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <input
+                      value={p.nome}
+                      onChange={(e)=>updatePonto(p.id,{ nome: (e.target as HTMLInputElement).value })}
+                      className="text-sm font-semibold bg-white/5 border border-white/10 rounded-lg px-2 py-1 w-[70%]"
+                    />
+
+
+
+                    
+                    <button onClick={()=>removePonto(p.id)} className="rounded-lg px-2 py-1 bg-white/5 hover:bg-white/10 text-slate-300 flex items-center gap-1 border border-white/10" title="remover ponto"><Trash2 className="w-3 h-3"/> remover</button>
+                  </div>
+
+                  <label className="block text-sm font-semibold mt-1">BTU / Capacidade</label>
+                  <select value={p.btu} onChange={(e)=>updatePonto(p.id,{ btu:e.target.value })} className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-[15px]">
+                    {BTU_OPTIONS.map(b => <option key={b.label} value={b.label}>{b.label}</option>)}
+                  </select>
+                  <div className="mt-1 text-xs text-slate-400">Tubulação {spec.l} e  {spec.s}</div>
+
+                  <div className="mt-3 grid grid-cols-3 gap-2 text-sm"> </div>
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-sm">
+
+  <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+    <div className="text-[11px] text-slate-400">Metros de Cobre</div>
+    <div className="mt-1 flex items-center gap-2 sm:gap-3 step-controls">
+
+      <div className="value-wrap relative shrink-0">
+        <input
+          type="number"
+          inputMode="numeric"
+          min={0}
+          max={100}
+          value={Number.isFinite(p.metros) ? p.metros : 0}
+          onChange={(e)=>{
+            const val = parseFloat((e.target as HTMLInputElement).value);
+            updatePonto(p.id,{ metros: Number.isFinite(val)? Math.max(0, Math.min(100, val)) : 0 });
+          }}
+          className="no-spin step-value value-pill text-lg sm:text-xl font-extrabold tabular-nums"
+        />
+        <span className="ghost ghost-minus">−</span>
+        <span className="ghost ghost-plus">+</span>
+      </div>
+
+      <div className="flex items-center gap-2 ml-auto shrink-0">
+        <button
+          type="button"
+          aria-label="Diminuir metros"
+          className="btn-step z-10"
+          data-variant="minus"
+          disabled={(Number.isFinite(p.metros)?p.metros:0) <= 0}
+          onClick={()=>{
+            const v = Number.isFinite(p.metros)? p.metros : 0;
+            updatePonto(p.id, { metros: Math.max(0, Math.min(100, v - 1)) });
+          }}
+        >
+          <span className="flash" aria-hidden />
+          −
+        </button>
+        <button
+          type="button"
+          aria-label="Aumentar metros"
+          className="btn-step z-10"
+          data-variant="plus"
+          disabled={(Number.isFinite(p.metros)?p.metros:0) >= 100}
+          onClick={()=>{
+            const v = Number.isFinite(p.metros)? p.metros : 0;
+            updatePonto(p.id, { metros: Math.max(0, Math.min(100, v + 1)) });
+          }}
+        >
+          <span className="flash" aria-hidden />
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+    <div className="text-[11px] text-slate-400">Cabo PP (m)</div>
+    <div className="mt-1 flex items-center gap-2 sm:gap-3 step-controls">
+      <div className="value-wrap relative shrink-0">
+        <input
+          type="number"
+          inputMode="numeric"
+          min={0}
+          max={200}
+          value={Number.isFinite(p.ppMetros) ? p.ppMetros : 0}
+          onChange={(e)=>{
+            const val = parseFloat((e.target as HTMLInputElement).value);
+            updatePonto(p.id,{ ppMetros: Number.isFinite(val)? Math.max(0, Math.min(200, val)) : 0 });
+          }}
+          className="no-spin step-value value-pill text-lg sm:text-xl font-extrabold tabular-nums"
+        />
+        <span className="ghost ghost-minus">−</span>
+        <span className="ghost ghost-plus">+</span>
+      </div>
+
+      <div className="flex items-center gap-2 ml-auto shrink-0">
+        <button
+          type="button"
+          aria-label="Diminuir PP"
+          className="btn-step z-10"
+          data-variant="minus"
+          disabled={(Number.isFinite(p.ppMetros)?p.ppMetros:0) <= 0}
+          onClick={()=>{
+            const v = Number.isFinite(p.ppMetros)? p.ppMetros : 0;
+            updatePonto(p.id, { ppMetros: Math.max(0, Math.min(200, v - 1)) });
+          }}
+        >
+          <span className="flash" aria-hidden />
+          −
+        </button>
+        <button
+          type="button"
+          aria-label="Aumentar PP"
+          className="btn-step z-10"
+          data-variant="plus"
+          disabled={(Number.isFinite(p.ppMetros)?p.ppMetros:0) >= 200}
+          onClick={()=>{
+            const v = Number.isFinite(p.ppMetros)? p.ppMetros : 0;
+            updatePonto(p.id, { ppMetros: Math.max(0, Math.min(200, v + 1)) });
+          }}
+        >
+          <span className="flash" aria-hidden />
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>{`
+  @keyframes navSlide { 0%{background-position:0% 0} 100%{background-position:-200% 0} }
+  @keyframes pulseUp   { 0%{transform:scale(1)} 40%{transform:scale(1.06)} 100%{transform:scale(1)} }
+  @keyframes pulseDown { 0%{transform:scale(1)} 40%{transform:scale(.95)} 100%{transform:scale(1)} }
+
+  .btn-step{
+    position:relative; overflow:visible;
+    width:2rem; height:2rem;
+    display:inline-flex; align-items:center; justify-content:center;
+    border-radius:.5rem; border:1px solid rgba(255,255,255,.10);
+    background:rgba(255,255,255,.06);
+    font-weight:700; line-height:1; user-select:none;
+    transition:background .15s ease, border-color .15s ease, opacity .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn-step .flash{
+    position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background:linear-gradient(90deg, var(--c1), var(--c2) 33%, var(--c3) 66%, var(--c4));
+    background-size:200% 100%;
+    opacity:0; transition:opacity .18s ease; filter:saturate(1.05);
+  }
+  .btn-step[data-variant="minus"]{ --c1:#dc2626; --c2:#ef4444; --c3:#f43f5e; --c4:#dc2626; }
+  .btn-step[data-variant="plus"] { --c1:#16a34a; --c2:#22c55e; --c3:#0ea5e9; --c4:#16a34a; }
+  .btn-step[data-variant="minus"]:hover{ background:rgba(239,68,68,.16); border-color:rgba(239,68,68,.45); }
+  .btn-step[data-variant="plus"]:hover { background:rgba(16,185,129,.18); border-color:rgba(16,185,129,.45); }
+  .btn-step:active{ border-color:transparent; }
+  .btn-step:active .flash{
+    opacity:.95; animation:navSlide .7s linear;
+    inset:-4px; border-radius:calc(.5rem + 4px);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .btn-step:active::before{
+    content:""; position:absolute; inset:-8px; pointer-events:none;
+    border-radius:calc(.5rem + 8px);
+    background:linear-gradient(90deg, var(--c1), var(--c2) 33%, var(--c3) 66%, var(--c4));
+    opacity:.28; filter:blur(10px);
+  }
+  .btn-step:disabled{ opacity:.45; cursor:not-allowed; }
+
+  .value-pill{
+    width:68px; padding:.35rem .55rem;
+    border-radius:.6rem;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(255,255,255,.06);
+    color:#e7eef5; outline:none; text-align:left;
+  }
+  .value-pill:focus{ border-color:rgba(255,255,255,.22); background:rgba(255,255,255,.08); }
+
+  .step-value{ transition:color .25s ease, transform .25s ease, box-shadow .25s ease; font-variant-numeric:tabular-nums; }
+  .step-controls:has(.btn-step[data-variant="plus"]:active) .step-value{
+    animation:pulseUp .28s ease-out; color:#d1fae5; box-shadow:0 0 0 2px rgba(16,185,129,.35) inset;
+  }
+  .step-controls:has(.btn-step[data-variant="minus"]:active) .step-value{
+    animation:pulseDown .28s ease-out; color:#fecaca; box-shadow:0 0 0 2px rgba(239,68,68,.35) inset;
+  }
+
+  .ghost{
+    position:absolute; left:calc(100% + .35rem); top:50%;
+    transform:translateY(-50%) scale(.9);
+    opacity:0; font-weight:800; font-size:1rem;
+    transition:opacity .15s ease, transform .15s ease;
+    text-shadow:0 0 6px rgba(0,0,0,.25);
+  }
+  .ghost-plus{ color:#34d399; }
+  .ghost-minus{ color:#f87171; }
+  .step-controls:has(.btn-step[data-variant="plus"]:active) .ghost-plus{ opacity:1; transform:translateY(-50%) scale(1.05); }
+  .step-controls:has(.btn-step[data-variant="minus"]:active) .ghost-minus{ opacity:1; transform:translateY(-50%) scale(1.05); }
+
+  @media (max-width: 420px){
+    .btn-step{ width:1.75rem; height:1.75rem; }
+    .value-pill{ width:56px; font-size:1rem; }
+
+    .btn-step:active .flash{ inset:-2px; border-radius:calc(.5rem + 2px); }
+    .btn-step:active::before{ inset:-6px; }
+  }
+
+  .no-spin::-webkit-outer-spin-button,.no-spin::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  .no-spin{ -moz-appearance:textfield; }
+`}</style>
+
+                  <div className="grid grid-cols-3 gap-2 mt-3 text-sm">
+
+  <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+  <div className="text-[11px] text-slate-400">
+    Cobre {spec.l} - {spec.s}
+  </div>
+
+  <div className="font-bold">R$ {(mtrs * cobrePM).toFixed(2)}</div>
+
+  <div className="text-[11px] text-slate-400">(R$ {cobrePM.toFixed(2)}/m)</div>
+
+  <div className="mt-2 text-[11px] text-slate-400 border-t border-white/10 pt-1">
+    {spec.l} = R$ {(mtrs * pricePerMeterCobre(spec.l, prices)).toFixed(2)} <br />
+    {spec.s} = R$ {(mtrs * pricePerMeterCobre(spec.s, prices)).toFixed(2)}
+  </div>
+
+<div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+  Lucro: <b className="text-amber-200">R$ {fatCobre.toFixed(2)}</b>
+</div>
+</div>
+
+  <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+  <div className="text-[11px] text-slate-400">Isolamento</div>
+
+  <div className="font-bold">R$ {(mtrs * isolPM).toFixed(2)}</div>
+
+  <div className="text-[11px] text-slate-400">(R$ {isolPM.toFixed(2)}/m)</div>
+
+  <div className="mt-2 text-[11px] text-slate-400 border-t border-white/10 pt-1">
+    {spec.l} = R$ {(mtrs * pricePerMeterIsol(spec.l, prices)).toFixed(2)} <br />
+    {spec.s} = R$ {(mtrs * pricePerMeterIsol(spec.s, prices)).toFixed(2)}
+  </div>
+
+<div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+  Lucro: <b className="text-amber-200">R$ {fatIsol.toFixed(2)}</b>
+</div>
+</div>
+
+<div className="rounded-xl border border-white/10 bg-white/5 p-2">
+  <div className="text-[11px] text-slate-400">Cabo PP</div>
+  <div className="font-bold">R$ {(ppm * Number(prices.pp ?? 0)).toFixed(2)}</div>
+  <div className="text-[11px] text-slate-400">(R$ {(Number(prices.pp ?? 0)).toFixed(2)}/m)</div>
+
+  <div className="mt-2 border-t border-white/10 pt-1">
+    <div className="text-[11px] text-slate-400">Fita PVC</div>
+    <div className="font-bold">R$ {(mtrs * Number(prices.fitaPVC ?? 0)).toFixed(2)}</div>
+
+<div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+  Lucro: <b className="text-amber-200">R$ {(fatPP + fatPVC).toFixed(2)}</b>
+</div>
+  </div>
+
+</div>
+
+  <button
+    onClick={()=>updatePonto(p.id,{ corrugada: !p.corrugada })}
+    className={`rounded-xl border px-2 py-2 ${p.corrugada ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+  >
+    <div className="font-semibold">Corrugada</div>
+    <div>{p.corrugada ? `+ R$ ${(mtrs * corrugadaVendaPM(spec, prices)).toFixed(2)}` : '_____'} </div>
+    <div className="text-[11px] text-slate-400">{`R$ ${corrugadaVendaPM(spec, prices).toFixed(2)}/m`}</div>
+
+  {p.corrugada && (
+    <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+      Lucro: <b className="text-amber-200">R$ {fatCor.toFixed(2)}</b>
+    </div>
+  )}
+  </button>
+
+  <button
+    onClick={()=>updatePonto(p.id,{ caixa: !p.caixa })}
+    className={`rounded-xl border px-2 py-2 ${p.caixa ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+  >
+    <div className="font-semibold">Caixa POP</div>
+    <div>{p.caixa ? `+ R$ ${Number(prices.caixa || 0).toFixed(2)}` : '_____'} </div>
+    <div className="text-[11px] text-slate-400">por ponto</div>
+
+  {p.caixa && (
+    <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+      Lucro: <b className="text-amber-200">R$ {fatCx.toFixed(2)}</b>
+    </div>
+  )}
+  </button>
+
+  <button
+    onClick={()=>updatePonto(p.id,{ dreno: !p.dreno })}
+    className={`rounded-xl border px-2 py-2 ${p.dreno ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+  >
+    <div className="font-semibold">Dreno</div>
+    <div>{p.dreno ? `+ R$ ${Number(prices.dreno || 0).toFixed(2)}` : '_____'} </div>
+    <div className="text-[11px] text-slate-400">por ponto</div>
+
+  {p.dreno && (
+    <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+      Lucro: <b className="text-amber-200">R$ {fatDr.toFixed(2)}</b>
+    </div>
+  )}
+  </button>
+</div>
+
+                  <div className="mt-3 text-sm">
+                    <div className="text-[11px] text-slate-400 mb-1">Mão de obra (por ponto)</div>
+                    <div className="grid grid-cols-4 gap-2">
+                      <button
+                        onClick={()=>updatePonto(p.id,{ maoObra: 300, maoObraOutro: undefined })}
+                        className={`rounded-xl border px-2 py-2 ${p.maoObra===300 && p.maoObraOutro===undefined ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+                      >
+                        Nível 1<br/>R$ 300,00
+                      </button>
+                      <button
+                        onClick={()=>updatePonto(p.id,{ maoObra: 350, maoObraOutro: undefined })}
+                        className={`rounded-xl border px-2 py-2 ${p.maoObra===350 && p.maoObraOutro===undefined ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+                      >
+                        Nível 2<br/>R$ 350,00
+                      </button>
+                      <button
+                        onClick={()=>updatePonto(p.id,{ maoObra: 400, maoObraOutro: undefined })}
+                        className={`rounded-xl border px-2 py-2 ${p.maoObra===400 && p.maoObraOutro===undefined ? 'bg-emerald-600/20 border-emerald-500/40' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}
+                      >
+                        Nível 3<br/>R$ 400,00
+                      </button>
+                      <div className="rounded-xl border border-white/10 bg-white/5 p-2 text-center">
+                        <div className="text-[11px] text-slate-400">Outro</div>
+                        <input type="number" min={0} step={10} value={p.maoObraOutro ?? ''} placeholder="R$" className="mt-1 w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1"
+                          onChange={(e)=>{
+                            const v = parseFloat((e.target as HTMLInputElement).value);
+                            if(Number.isFinite(v)) updatePonto(p.id,{ maoObraOutro: v, maoObra: v });
+                            else updatePonto(p.id,{ maoObraOutro: undefined });
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+<div className="mt-3 rounded-xl border border-white/10 bg-white/5 p-2 text-sm">
+  <div className="flex items-center justify-between">
+    <span>Subtotal</span>
+    <b>R$ {sub.toFixed(2)}</b>
+  </div>
+  <div className="flex items-center justify-between text-emerald-300/90">
+    <span>Com Nota (+15%)</span>
+    <b>R$ {subNota.toFixed(2)}</b>
+  </div>
+  <div className="flex items-center justify-between text-sky-300/90">
+    <span>Com desconto (-5%)</span>
+    <b>R$ {subDesc.toFixed(2)}</b>
+  </div>
+
+  <div className="mt-2 border-t border-white/10 pt-2 flex items-center justify-between text-amber-200">
+    <span>Lucro (materiais)</span>
+    <b>R$ {fatTot.toFixed(2)}</b>
+  </div>
+
+  <div className="flex items-center justify-between text-amber-300">
+    <span>Mão de obra</span>
+    <b>R$ {mo.toFixed(2)}</b>
+  </div>
+
+  <div className="flex items-center justify-between text-amber-400 font-bold">
+    <span>Total Lucro + Mão de obra</span>
+    <b>R$ {(fatTot + mo).toFixed(2)}</b>
+  </div>
+
+<div className="flex items-center justify-between font-bold">
+  <span
+    className={
+      sub > 0
+        ? ((fatTot + mo) / sub) * 100 >= 70
+          ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+          : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+        : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+    }
+  >
+    Margem de Lucro
+  </span>
+
+  <b
+    className={
+      sub > 0
+        ? ((fatTot + mo) / sub) * 100 >= 70
+          ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+          : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+        : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+    }
+  >
+    {sub > 0 ? `${(((fatTot + mo) / sub) * 100).toFixed(2)}%` : "0%"}
+  </b>
+</div>
+
+</div>
+
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
+
+  <div className="mr-auto text-sm">
+    Pontos: <b>{qtdPontos}</b>
+  </div>
+
+<div className="w-full grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 xl:grid-cols-4 gap-1.5">
+  {[
+    ['Cobre',       totais.totalCobre],
+    ['Isolamento',  totais.totalIsol],
+    ['Cabo PP',     totais.totalPP],
+    ['Fita PVC',    totais.totalFita],
+    ['Corrugada',   totais.totalCorr],
+    ['Caixa POP',   totais.totalCx],
+    ['Dreno',       totais.totalDreno],
+    ['Mão de obra', totais.totalMO],
+  ].map(([label, valor]) => (
+    <div
+      key={label as string}
+      className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1.5 flex items-center justify-between"
+    >
+      <span className="text-[11px] text-slate-400">{label}</span>
+      <span className="text-[13px] font-semibold tabular-nums text-slate-300">
+        R$ {(valor as number).toFixed(2)}
+      </span>
+    </div>
+  ))}
+</div>
+
+<div className="w-full h-0" />
+
+<div className="w-full grid grid-cols-1 md:grid-cols-3 gap-2">
+  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+    <span className="text-sm">Total</span>
+    <b className="text-lg font-extrabold tabular-nums">R$ {totais.total.toFixed(2)}</b>
+  </div>
+
+  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+    <span className="text-sm text-emerald-300/90">Com Nota (+15%)</span>
+    <b className="text-lg font-extrabold text-emerald-300/90 tabular-nums">
+      R$ {totais.totalNota.toFixed(2)}
+    </b>
+  </div>
+
+  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+    <span className="text-sm text-sky-300/90">Com desconto (-5%)</span>
+    <b className="text-lg font-extrabold text-sky-300/90 tabular-nums">
+      R$ {totais.totalDesc.toFixed(2)}
+    </b>
+  </div>
+</div>
+
+  {qtdPontos > 1 && (
+    <>
+      <div className="w-full border-t border-white/10 my-1" />
+      <div className="text-sm text-slate-300">Média por ponto:</div>
+      <div className="text-sm font-extrabold">Subtotal: R$ {avgTotal.toFixed(2)}</div>
+      <div className="text-sm font-extrabold text-emerald-300/90">Com Nota: R$ {avgNota.toFixed(2)}</div>
+      <div className="text-sm font-extrabold text-sky-300/90">Com desconto: R$ {avgDesc.toFixed(2)}</div>
+    </>
+  )}
+
+  <div className="w-full h-0" />
+
+  <div className="text-lg font-extrabold text-amber-200">
+    Lucro (materiais): R$ {totais.totalFat.toFixed(2)}
+  </div>
+  <div className="text-lg font-extrabold text-amber-300">
+    Mão de obra: R$ {totais.totalMO.toFixed(2)}
+  </div>
+  <div className="text-lg font-extrabold text-amber-400">
+    Total Lucro + Mão de obra: R$ {(totais.totalFat + totais.totalMO).toFixed(2)}
+  </div>
+
+  <div
+    className={`text-lg font-extrabold ${
+      totais.total > 0
+        ? ((totais.totalFat + totais.totalMO) / totais.total) * 100 >= 60
+          ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+          : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+        : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+    }`}
+  >
+    Margem de Lucro:{" "}
+    {totais.total > 0
+      ? `${(((totais.totalFat + totais.totalMO) / totais.total) * 100).toFixed(2)}%`
+      : "0%"}
+  </div>
+</div>
 
         </div>
       )}
     </div>
   );
 }
+
+
+
+
 
 
 
@@ -2385,3 +2622,4 @@ function Precificacao({ prices, onChange }:{ prices:Prices; onChange:(p:Prices)=
     </div>
   );
 }
+
