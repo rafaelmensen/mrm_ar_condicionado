@@ -336,13 +336,6 @@ function businessDaysFromToday(target?: string | null) {
   return days;
 }
 
-
-        // ========= Animations =========
-        const PONTO_VARIANTS = {
-          initial: { opacity: 0, y: 20, scale: 0.98, filter: "blur(6px)" },
-          animate: { opacity: 1, y: 0,  scale: 1,    filter: "blur(0px)" },
-        };
-    
 export default function App() {
   const dark = true;
   const [route, setRoute] = useState("gerencial");
@@ -1287,7 +1280,7 @@ const salvar = () => {
   const fatTot   = fatCobre + fatIsol + fatPP + fatPVC + fatCor + fatCx + fatDr;
 
               return (
-                <motion.div key={p.id} layout variants={PONTO_VARIANTS} initial="initial" animate="animate" transition={{ type: "spring", stiffness: 320, damping: 26 }} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div key={p.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
                   <div className="flex items-center justify-between mb-2">
                     <input
                       value={p.nome}
@@ -1687,7 +1680,7 @@ const salvar = () => {
 
 </div>
 
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -1945,14 +1938,13 @@ const salvar = () => {
   const fatTot   = fatCobre + fatIsol + fatPP + fatPVC + fatCor + fatCx + fatDr;
 
               return (
-                <motion.div key={p.id} layout variants={PONTO_VARIANTS} initial="initial" animate="animate" transition={{ type: "spring", stiffness: 320, damping: 26 }} className="rounded-2xl border border-white/10 bg-white/5 p-3">
+                <div key={p.id} className="rounded-2xl border border-white/10 bg-white/5 p-3">
                   <div className="flex items-center justify-between mb-2">
                     <input
                       value={p.nome}
                       onChange={(e)=>updatePonto(p.id,{ nome: (e.target as HTMLInputElement).value })}
                       className="text-sm font-semibold bg-white/5 border border-white/10 rounded-lg px-2 py-1 w-[70%]"
                     />
-
 
 
                     
@@ -2348,7 +2340,7 @@ const salvar = () => {
 
 </div>
 
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -2622,4 +2614,3 @@ function Precificacao({ prices, onChange }:{ prices:Prices; onChange:(p:Prices)=
     </div>
   );
 }
-
