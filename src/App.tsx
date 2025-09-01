@@ -1716,7 +1716,7 @@ const salvar = () => {
  border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
 
   {/* TÍTULO */}
-  <div className="w-full -mt-1 mb-1">
+  <div className="w-full -mt-1 mb-0">
     <h3 className="text-base font-extrabold">Resumo — Totais</h3>
   </div>
 
@@ -2432,10 +2432,10 @@ const salvar = () => {
           </div>
 
 <div className="mt-4 rounded-[20px]
- border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
+ border border-white/1 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
 
   {/* TÍTULO */}
-  <div className="w-full -mt-1 mb-1">
+  <div className="w-full -mt-1 mb-0">
     <h3 className="text-base font-extrabold">Resumo — Totais</h3>
   </div>
 
