@@ -1532,7 +1532,7 @@ const salvar = () => {
     {spec.s} = R$ {(mtrs * pricePerMeterCobre(spec.s, prices)).toFixed(2)}
   </div>
 
-<div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+<div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
   Lucro: <b className="text-amber-200">R$ {fatCobre.toFixed(2)}</b>
 </div>
 </div>
@@ -1549,7 +1549,7 @@ const salvar = () => {
     {spec.s} = R$ {(mtrs * pricePerMeterIsol(spec.s, prices)).toFixed(2)}
   </div>
 
-<div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+<div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
   Lucro: <b className="text-amber-200">R$ {fatIsol.toFixed(2)}</b>
 </div>
 </div>
@@ -1563,7 +1563,7 @@ const salvar = () => {
     <div className="text-[11px] text-slate-400">Fita PVC</div>
     <div className="font-bold">R$ {(mtrs * Number(prices.fitaPVC ?? 0)).toFixed(2)}</div>
 
-<div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+<div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
   Lucro: <b className="text-amber-200">R$ {(fatPP + fatPVC).toFixed(2)}</b>
 </div>
   </div>
@@ -1579,7 +1579,7 @@ const salvar = () => {
     <div className="text-[11px] text-slate-400">{`R$ ${corrugadaVendaPM(spec, prices).toFixed(2)}/m`}</div>
 
   {p.corrugada && (
-    <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+    <div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
       Lucro: <b className="text-amber-200">R$ {fatCor.toFixed(2)}</b>
     </div>
   )}
@@ -1594,7 +1594,7 @@ const salvar = () => {
     <div className="text-[11px] text-slate-400">por ponto</div>
 
   {p.caixa && (
-    <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+    <div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
       Lucro: <b className="text-amber-200">R$ {fatCx.toFixed(2)}</b>
     </div>
   )}
@@ -1609,7 +1609,7 @@ const salvar = () => {
     <div className="text-[11px] text-slate-400">por ponto</div>
 
   {p.dreno && (
-    <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+    <div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
       Lucro: <b className="text-amber-200">R$ {fatDr.toFixed(2)}</b>
     </div>
   )}
@@ -1715,96 +1715,164 @@ const salvar = () => {
           <div className="mt-4 rounded-[20px]
  border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
 
+  {/* TÍTULO */}
+  <div className="w-full -mt-1 mb-1">
+    <h3 className="text-base font-extrabold">Resumo — Totais</h3>
+  </div>
+
+  {/* QUANTIDADE DE PONTOS */}
   <div className="mr-auto text-sm">
-    Pontos: <b>{qtdPontos}</b>
+    Pontos Instalação: <b>{qtdPontos}</b>
   </div>
 
-<div className="w-full grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 xl:grid-cols-4 gap-1.5">
-  {[
-    ['Cobre',       totais.totalCobre],
-    ['Isolamento',  totais.totalIsol],
-    ['Cabo PP',     totais.totalPP],
-    ['Fita PVC',    totais.totalFita],
-    ['Corrugada',   totais.totalCorr],
-    ['Caixa POP',   totais.totalCx],
-    ['Dreno',       totais.totalDreno],
-    ['Mão de obra', totais.totalMO],
-  ].map(([label, valor]) => (
-    <div
-      key={label as string}
-      className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1.5 flex items-center justify-between"
-    >
-      <span className="text-[11px] text-slate-400">{label}</span>
-      <span className="text-[13px] font-semibold tabular-nums text-slate-300">
-        R$ {(valor as number).toFixed(2)}
-      </span>
+  {/* TOTAL / NOTA / DESCONTO */}
+  <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-2">
+    <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+      <span className="text-sm">Total</span>
+      <b className="text-lg font-extrabold tabular-nums">R$ {totais.total.toFixed(2)}</b>
     </div>
-  ))}
-</div>
 
-<div className="w-full h-0" />
+    <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+      <span className="text-sm text-emerald-300/90">Com Nota (+15%)</span>
+      <b className="text-lg font-extrabold text-emerald-300/90 tabular-nums">
+        R$ {totais.totalNota.toFixed(2)}
+      </b>
+    </div>
 
-<div className="w-full grid grid-cols-1 md:grid-cols-3 gap-2">
-  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
-    <span className="text-sm">Total</span>
-    <b className="text-lg font-extrabold tabular-nums">R$ {totais.total.toFixed(2)}</b>
+    <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+      <span className="text-sm text-sky-300/90">Com desconto (-5%)</span>
+      <b className="text-lg font-extrabold text-sky-300/90 tabular-nums">
+        R$ {totais.totalDesc.toFixed(2)}
+      </b>
+    </div>
   </div>
 
-  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
-    <span className="text-sm text-emerald-300/90">Com Nota (+15%)</span>
-    <b className="text-lg font-extrabold text-emerald-300/90 tabular-nums">
-      R$ {totais.totalNota.toFixed(2)}
-    </b>
-  </div>
 
-  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
-    <span className="text-sm text-sky-300/90">Com desconto (-5%)</span>
-    <b className="text-lg font-extrabold text-sky-300/90 tabular-nums">
-      R$ {totais.totalDesc.toFixed(2)}
-    </b>
-  </div>
-</div>
+{/* MÉDIA POR PONTO — mobile: valor embaixo; ≥sm: lado a lado */}
+{qtdPontos > 1 && (
+  <>
+    <div className="w-full border-t border-white/10 my-1" />
+    <div className="w-full flex flex-col gap-2">
+      <span className="text-sm text-slate-300">Média por ponto:</span>
 
-  {qtdPontos > 1 && (
-    <>
-      <div className="w-full border-t border-white/10 my-1" />
-      <div className="text-sm text-slate-300">Média por ponto:</div>
-      <div className="text-sm font-extrabold">Subtotal: R$ {avgTotal.toFixed(2)}</div>
-      <div className="text-sm font-extrabold text-emerald-300/90">Com Nota: R$ {avgNota.toFixed(2)}</div>
-      <div className="text-sm font-extrabold text-sky-300/90">Com desconto: R$ {avgDesc.toFixed(2)}</div>
-    </>
-  )}
+      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
+        {/* Subtotal médio */}
+        <div className="relative w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 pl-4 pr-3 py-2">
+          <span className="absolute inset-y-0 left-0 w-1.5 rounded-l bg-slate-300/90" aria-hidden />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+            <span className="text-xs text-slate-300">Subtotal</span>
+            <b className="tabular-nums">R$ {avgTotal.toFixed(2)}</b>
+          </div>
+        </div>
+
+        {/* Média com nota */}
+        <div className="relative w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 pl-4 pr-3 py-2">
+          <span className="absolute inset-y-0 left-0 w-1.5 rounded-l bg-emerald-300/90" aria-hidden />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+            <span className="text-xs text-emerald-300/90">Com Nota</span>
+            <b className="text-emerald-300/90 tabular-nums">R$ {avgNota.toFixed(2)}</b>
+          </div>
+        </div>
+
+        {/* Média com desconto */}
+        <div className="relative w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 pl-4 pr-3 py-2">
+          <span className="absolute inset-y-0 left-0 w-1.5 rounded-l bg-sky-300/90" aria-hidden />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+            <span className="text-xs text-sky-300/90">Com desconto</span>
+            <b className="text-sky-300/90 tabular-nums">R$ {avgDesc.toFixed(2)}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </>
+)}
 
   <div className="w-full h-0" />
 
-  <div className="text-lg font-extrabold text-amber-200">
-    Lucro (materiais): R$ {totais.totalFat.toFixed(2)}
-  </div>
-  <div className="text-lg font-extrabold text-amber-300">
-    Mão de obra: R$ {totais.totalMO.toFixed(2)}
-  </div>
-  <div className="text-lg font-extrabold text-amber-400">
-    Total Lucro + Mão de obra: R$ {(totais.totalFat + totais.totalMO).toFixed(2)}
+  {/* CARD: MARGEM + LUCROS */}
+  <div className="w-full rounded-[16px] border border-white/10 bg-white/5 p-3 mt-1">
+    <div className="flex items-center justify-between">
+      <span
+        className={`text-lg font-extrabold ${
+          totais.total > 0
+            ? ((totais.totalFat + totais.totalMO) / totais.total) * 100 >= 60
+              ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+              : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+            : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+        }`}
+
+        
+      >
+        
+        Margem de Lucro
+      </span>
+      <b
+        className={`text-lg font-extrabold tabular-nums ${
+          totais.total > 0
+            ? ((totais.totalFat + totais.totalMO) / totais.total) * 100 >= 60
+              ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+              : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+            : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+        }`}
+      >
+        {totais.total > 0
+          ? `${(((totais.totalFat + totais.totalMO) / totais.total) * 100).toFixed(2)}%`
+          : "0%"}
+      </b>
+    </div>
+
+    <div className="my-2 border-t border-white/10" />
+
+    <div className="flex items-center justify-between text-amber-200">
+      <span>Lucro (materiais)</span>
+      <b className="tabular-nums">R$ {totais.totalFat.toFixed(2)}</b>
+    </div>
+
+    <div className="flex items-center justify-between text-amber-300">
+      <span>Mão de obra</span>
+      <b className="tabular-nums">R$ {totais.totalMO.toFixed(2)}</b>
+    </div>
+
+    <div className="flex items-center justify-between text-amber-400 font-extrabold">
+      <span>Total Lucro </span>
+      <b className="tabular-nums">R$ {(totais.totalFat + totais.totalMO).toFixed(2)}</b>
+    </div>
   </div>
 
-  <div
-    className={`text-lg font-extrabold ${
-      totais.total > 0
-        ? ((totais.totalFat + totais.totalMO) / totais.total) * 100 >= 60
-          ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
-          : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-        : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-    }`}
-  >
-    Margem de Lucro:{" "}
-    {totais.total > 0
-      ? `${(((totais.totalFat + totais.totalMO) / totais.total) * 100).toFixed(2)}%`
-      : "0%"}
+
+  {/* RESUMO DOS MATERIAIS (agora no final) */}
+  <div className="w-full h-0" />
+  <div className="w-full">
+    <div className="text-sm text-slate-300 mb-1">Resumo dos materiais</div>
+    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 xl:grid-cols-4 gap-1.5">
+      {[
+        ['Cobre',       totais.totalCobre],
+        ['Isolamento',  totais.totalIsol],
+        ['Cabo PP',     totais.totalPP],
+        ['Fita PVC',    totais.totalFita],
+        ['Corrugada',   totais.totalCorr],
+        ['Caixa POP',   totais.totalCx],
+        ['Dreno',       totais.totalDreno],
+        ['Mão de obra', totais.totalMO],
+      ].map(([label, valor]) => (
+        <div
+          key={label as string}
+          className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1.5 flex items-center justify-between"
+        >
+          <span className="text-[11px] text-slate-400">{label}</span>
+          <span className="text-[13px] font-semibold tabular-nums text-slate-300">
+            R$ {(valor as number).toFixed(2)}
+          </span>
+        </div>
+      ))}
+    </div>
   </div>
 </div>
 
+
         </div>
       )}
+
 
 {tiposSelecionados.includes("infra") && (
 <div className="rounded-[20px] border border-white/10 bg-white/5 pt-2 pb-3 px-3 sm:pt-2 sm:pb-4 sm:px-4">
@@ -1955,7 +2023,7 @@ const salvar = () => {
   const fatDr    = p.dreno ? (Number(prices.dreno ?? 0) - Number(prices.custoDreno ?? 0)) : 0;
 
   const fatTot   = fatCobre + fatIsol + fatPP + fatPVC + fatCor + fatCx + fatDr;
-
+// aqui vai o ponto
               return (
                 <div key={p.id} className="rounded-[20px]
  border border-white/10 bg-white/5 p-3">
@@ -2183,7 +2251,7 @@ const salvar = () => {
     {spec.s} = R$ {(mtrs * pricePerMeterCobre(spec.s, prices)).toFixed(2)}
   </div>
 
-<div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+<div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
   Lucro: <b className="text-amber-200">R$ {fatCobre.toFixed(2)}</b>
 </div>
 </div>
@@ -2200,7 +2268,7 @@ const salvar = () => {
     {spec.s} = R$ {(mtrs * pricePerMeterIsol(spec.s, prices)).toFixed(2)}
   </div>
 
-<div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+<div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
   Lucro: <b className="text-amber-200">R$ {fatIsol.toFixed(2)}</b>
 </div>
 </div>
@@ -2214,7 +2282,7 @@ const salvar = () => {
     <div className="text-[11px] text-slate-400">Fita PVC</div>
     <div className="font-bold">R$ {(mtrs * Number(prices.fitaPVC ?? 0)).toFixed(2)}</div>
 
-<div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+<div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
   Lucro: <b className="text-amber-200">R$ {(fatPP + fatPVC).toFixed(2)}</b>
 </div>
   </div>
@@ -2230,7 +2298,7 @@ const salvar = () => {
     <div className="text-[11px] text-slate-400">{`R$ ${corrugadaVendaPM(spec, prices).toFixed(2)}/m`}</div>
 
   {p.corrugada && (
-    <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+    <div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
       Lucro: <b className="text-amber-200">R$ {fatCor.toFixed(2)}</b>
     </div>
   )}
@@ -2245,7 +2313,7 @@ const salvar = () => {
     <div className="text-[11px] text-slate-400">por ponto</div>
 
   {p.caixa && (
-    <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+    <div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
       Lucro: <b className="text-amber-200">R$ {fatCx.toFixed(2)}</b>
     </div>
   )}
@@ -2260,7 +2328,7 @@ const salvar = () => {
     <div className="text-[11px] text-slate-400">por ponto</div>
 
   {p.dreno && (
-    <div className="mt-2 border-t border-white/10 pt-1 text-[11px] text-amber-300/90">
+    <div className="mt-2 border-t border-white/10 pt-1 text-[10px] text-amber-300/90">
       Lucro: <b className="text-amber-200">R$ {fatDr.toFixed(2)}</b>
     </div>
   )}
@@ -2363,99 +2431,167 @@ const salvar = () => {
             })}
           </div>
 
-          <div className="mt-4 rounded-[20px]
+<div className="mt-4 rounded-[20px]
  border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
 
+  {/* TÍTULO */}
+  <div className="w-full -mt-1 mb-1">
+    <h3 className="text-base font-extrabold">Resumo — Totais</h3>
+  </div>
+
+  {/* QUANTIDADE DE PONTOS */}
   <div className="mr-auto text-sm">
-    Pontos: <b>{qtdPontos}</b>
+    Pontos Infra: <b>{qtdPontos}</b>
   </div>
 
-<div className="w-full grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 xl:grid-cols-4 gap-1.5">
-  {[
-    ['Cobre',       totais.totalCobre],
-    ['Isolamento',  totais.totalIsol],
-    ['Cabo PP',     totais.totalPP],
-    ['Fita PVC',    totais.totalFita],
-    ['Corrugada',   totais.totalCorr],
-    ['Caixa POP',   totais.totalCx],
-    ['Dreno',       totais.totalDreno],
-    ['Mão de obra', totais.totalMO],
-  ].map(([label, valor]) => (
-    <div
-      key={label as string}
-      className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1.5 flex items-center justify-between"
-    >
-      <span className="text-[11px] text-slate-400">{label}</span>
-      <span className="text-[13px] font-semibold tabular-nums text-slate-300">
-        R$ {(valor as number).toFixed(2)}
-      </span>
+  {/* TOTAL / NOTA / DESCONTO */}
+  <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-2">
+    <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+      <span className="text-sm">Total</span>
+      <b className="text-lg font-extrabold tabular-nums">R$ {totais.total.toFixed(2)}</b>
     </div>
-  ))}
-</div>
 
-<div className="w-full h-0" />
+    <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+      <span className="text-sm text-emerald-300/90">Com Nota (+15%)</span>
+      <b className="text-lg font-extrabold text-emerald-300/90 tabular-nums">
+        R$ {totais.totalNota.toFixed(2)}
+      </b>
+    </div>
 
-<div className="w-full grid grid-cols-1 md:grid-cols-3 gap-2">
-  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
-    <span className="text-sm">Total</span>
-    <b className="text-lg font-extrabold tabular-nums">R$ {totais.total.toFixed(2)}</b>
+    <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
+      <span className="text-sm text-sky-300/90">Com desconto (-5%)</span>
+      <b className="text-lg font-extrabold text-sky-300/90 tabular-nums">
+        R$ {totais.totalDesc.toFixed(2)}
+      </b>
+    </div>
   </div>
 
-  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
-    <span className="text-sm text-emerald-300/90">Com Nota (+15%)</span>
-    <b className="text-lg font-extrabold text-emerald-300/90 tabular-nums">
-      R$ {totais.totalNota.toFixed(2)}
-    </b>
-  </div>
 
-  <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 flex items-center justify-between">
-    <span className="text-sm text-sky-300/90">Com desconto (-5%)</span>
-    <b className="text-lg font-extrabold text-sky-300/90 tabular-nums">
-      R$ {totais.totalDesc.toFixed(2)}
-    </b>
-  </div>
-</div>
+{/* MÉDIA POR PONTO — mobile: valor embaixo; ≥sm: lado a lado */}
+{qtdPontos > 1 && (
+  <>
+    <div className="w-full border-t border-white/10 my-1" />
+    <div className="w-full flex flex-col gap-2">
+      <span className="text-sm text-slate-300">Média por ponto:</span>
 
-  {qtdPontos > 1 && (
-    <>
-      <div className="w-full border-t border-white/10 my-1" />
-      <div className="text-sm text-slate-300">Média por ponto:</div>
-      <div className="text-sm font-extrabold">Subtotal: R$ {avgTotal.toFixed(2)}</div>
-      <div className="text-sm font-extrabold text-emerald-300/90">Com Nota: R$ {avgNota.toFixed(2)}</div>
-      <div className="text-sm font-extrabold text-sky-300/90">Com desconto: R$ {avgDesc.toFixed(2)}</div>
-    </>
-  )}
+      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2">
+        {/* Subtotal médio */}
+        <div className="relative w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 pl-4 pr-3 py-2">
+          <span className="absolute inset-y-0 left-0 w-1.5 rounded-l bg-slate-300/90" aria-hidden />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+            <span className="text-xs text-slate-300">Subtotal</span>
+            <b className="tabular-nums">R$ {avgTotal.toFixed(2)}</b>
+          </div>
+        </div>
+
+        {/* Média com nota */}
+        <div className="relative w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 pl-4 pr-3 py-2">
+          <span className="absolute inset-y-0 left-0 w-1.5 rounded-l bg-emerald-300/90" aria-hidden />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+            <span className="text-xs text-emerald-300/90">Com Nota</span>
+            <b className="text-emerald-300/90 tabular-nums">R$ {avgNota.toFixed(2)}</b>
+          </div>
+        </div>
+
+        {/* Média com desconto */}
+        <div className="relative w-full sm:w-auto rounded-lg border border-white/10 bg-white/5 pl-4 pr-3 py-2">
+          <span className="absolute inset-y-0 left-0 w-1.5 rounded-l bg-sky-300/90" aria-hidden />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+            <span className="text-xs text-sky-300/90">Com desconto</span>
+            <b className="text-sky-300/90 tabular-nums">R$ {avgDesc.toFixed(2)}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </>
+)}
 
   <div className="w-full h-0" />
 
-  <div className="text-lg font-extrabold text-amber-200">
-    Lucro (materiais): R$ {totais.totalFat.toFixed(2)}
-  </div>
-  <div className="text-lg font-extrabold text-amber-300">
-    Mão de obra: R$ {totais.totalMO.toFixed(2)}
-  </div>
-  <div className="text-lg font-extrabold text-amber-400">
-    Total Lucro + Mão de obra: R$ {(totais.totalFat + totais.totalMO).toFixed(2)}
+  {/* CARD: MARGEM + LUCROS */}
+  <div className="w-full rounded-[16px] border border-white/10 bg-white/5 p-3 mt-1">
+    <div className="flex items-center justify-between">
+      <span
+        className={`text-lg font-extrabold ${
+          totais.total > 0
+            ? ((totais.totalFat + totais.totalMO) / totais.total) * 100 >= 60
+              ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+              : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+            : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+        }`}
+
+        
+      >
+        
+        Margem de Lucro
+      </span>
+      <b
+        className={`text-lg font-extrabold tabular-nums ${
+          totais.total > 0
+            ? ((totais.totalFat + totais.totalMO) / totais.total) * 100 >= 60
+              ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
+              : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+            : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
+        }`}
+      >
+        {totais.total > 0
+          ? `${(((totais.totalFat + totais.totalMO) / totais.total) * 100).toFixed(2)}%`
+          : "0%"}
+      </b>
+    </div>
+
+    <div className="my-2 border-t border-white/10" />
+
+    <div className="flex items-center justify-between text-amber-200">
+      <span>Lucro (materiais)</span>
+      <b className="tabular-nums">R$ {totais.totalFat.toFixed(2)}</b>
+    </div>
+
+    <div className="flex items-center justify-between text-amber-300">
+      <span>Mão de obra</span>
+      <b className="tabular-nums">R$ {totais.totalMO.toFixed(2)}</b>
+    </div>
+
+    <div className="flex items-center justify-between text-amber-400 font-extrabold">
+      <span>Total Lucro </span>
+      <b className="tabular-nums">R$ {(totais.totalFat + totais.totalMO).toFixed(2)}</b>
+    </div>
   </div>
 
-  <div
-    className={`text-lg font-extrabold ${
-      totais.total > 0
-        ? ((totais.totalFat + totais.totalMO) / totais.total) * 100 >= 60
-          ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.6)]"
-          : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-        : "text-red-400 drop-shadow-[0_0_6px_rgba(239,68,68,0.6)]"
-    }`}
-  >
-    Margem de Lucro:{" "}
-    {totais.total > 0
-      ? `${(((totais.totalFat + totais.totalMO) / totais.total) * 100).toFixed(2)}%`
-      : "0%"}
+
+  {/* RESUMO DOS MATERIAIS (agora no final) */}
+  <div className="w-full h-0" />
+  <div className="w-full">
+    <div className="text-sm text-slate-300 mb-1">Resumo dos materiais</div>
+    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 xl:grid-cols-4 gap-1.5">
+      {[
+        ['Cobre',       totais.totalCobre],
+        ['Isolamento',  totais.totalIsol],
+        ['Cabo PP',     totais.totalPP],
+        ['Fita PVC',    totais.totalFita],
+        ['Corrugada',   totais.totalCorr],
+        ['Caixa POP',   totais.totalCx],
+        ['Dreno',       totais.totalDreno],
+        ['Mão de obra', totais.totalMO],
+      ].map(([label, valor]) => (
+        <div
+          key={label as string}
+          className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1.5 flex items-center justify-between"
+        >
+          <span className="text-[11px] text-slate-400">{label}</span>
+          <span className="text-[13px] font-semibold tabular-nums text-slate-300">
+            R$ {(valor as number).toFixed(2)}
+          </span>
+        </div>
+      ))}
+    </div>
   </div>
 </div>
 
+
         </div>
       )}
+
     </div>
   );
 }
