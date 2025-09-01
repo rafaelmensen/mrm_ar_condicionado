@@ -378,6 +378,9 @@ export default function App() {
   {NAV.find(n => n.id === route)?.label}
 </motion.h1>
 
+
+
+
 <div className="w-full md:w-auto">
   <div className="flex flex-wrap gap-2 justify-start">
     {NAV.map(({ id, label }) => {
@@ -471,7 +474,7 @@ export default function App() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 10 }}
-        transition={{ duration: 0.22, ease: "easeOut", delay: 0.08 }}
+transition={{ duration: 0.22, ease: "easeOut" }}
 className="relative z-10 p-2 sm:p-3 md:p-4"
       >
         {/* [NAVEGAÇÃO] GERENCIAL */}
@@ -613,7 +616,7 @@ const margemOk  = margemPct >= 60;
               </div>
 
               <div className="mt-2 font-bold flex items-center gap-2">
-                <span>Topal (salvo): R$ {sub.toFixed(2)}</span>
+                <span>Total (salvo): R$ {sub.toFixed(2)}</span>
 
                 {o.pago && (
                   <span className="px-2 py-0.5 rounded-md border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 text-xs">
@@ -1061,8 +1064,9 @@ const salvar = () => {
 <style>
 {`
   @keyframes pulse-green {
-    0%, 100% { background-color: rgb(5, 150, 105); }
+    0%, 100% { background-color: rgba(23, 190, 134, 1); }
     50%       { background-color: rgb(16, 185, 129); }
+    100%       { background-color: rgba(23, 154, 110, 1); }
   }
   .animate-pulse-green {
     animation: pulse-green 1.8s ease-in-out infinite;
@@ -1075,10 +1079,13 @@ const salvar = () => {
 <div className="rounded-[20px]
  border border-white/10 bg-white/5 p-3 sm:p-4"
 >
-  <div className="flex items-center justify-between mb-2">
-    <h3 className="text-lg font-extrabold">Selecionar o Tipo de Orçamento</h3>
-    <span className="text-xs text-slate-400"></span>
-  </div>
+<div className="flex items-center justify-between mb-1">
+  <h3 className="text-lg font-extrabold leading-tight -mt-0.5">
+    Selecionar o Tipo de Orçamento
+  </h3>
+  <span className="text-xs text-slate-400"></span>
+</div>
+
 
   <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
     {RFQ_TYPES.map((t) => {
@@ -1151,9 +1158,7 @@ const salvar = () => {
       )}
 
 { /* [REALIZAR > INSTALAÇÃO] Mesmas ferramentas do INFRA */ selectedTipo === "instalacao" && (
-  <div className="rounded-[20px]
- border border-white/10 bg-white/5 p-3 sm:p-4"
->
+<div className="rounded-[20px] border border-white/10 bg-white/5 pt-2 pb-3 px-3 sm:pt-2 sm:pb-4 sm:px-4">
     <div className="mb-3">
       <h3 className="text-lg font-extrabold">Instalação — Pontos</h3>
       <p className="text-xs text-slate-400">Selecione os pontos.</p>
@@ -1802,11 +1807,9 @@ const salvar = () => {
       )}
 
 {tiposSelecionados.includes("infra") && (
-  <div className="rounded-[20px]
- border border-white/10 bg-white/5 p-3 sm:p-4"
->
+<div className="rounded-[20px] border border-white/10 bg-white/5 pt-2 pb-3 px-3 sm:pt-2 sm:pb-4 sm:px-4">
     <div className="mb-3">
-      <h3 className="text-lg font-extrabold">Infra Estrutura — Pontos</h3>
+      <h3 className="text-lg font-extrabold">Infra Estrutura</h3>
       <p className="text-xs text-slate-400">Selecione os pontos.</p>
     </div>
 
