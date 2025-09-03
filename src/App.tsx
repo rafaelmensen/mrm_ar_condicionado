@@ -1036,6 +1036,10 @@ const salvar = () => {
 
 
 </div>
+<div className="relative my-4" aria-hidden>
+  <div className="h-px w-full bg-white/10" />
+  <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-emerald-400/40 via-sky-400/40 to-blue-400/40 blur-[1px]" />
+</div>
 
 <div className="rounded-[20px]"
 >
@@ -1049,6 +1053,8 @@ const salvar = () => {
       </span>
     </div>
     </div>
+
+
 {/* 
 <div className="mb-3 pl-3 sm:pl-4">
       <h3 className="text-2xl sm:text-3xl font-extrabold">Instalação — Pontos</h3>
@@ -1136,6 +1142,10 @@ const salvar = () => {
       100% { transform: scale(1.8); opacity: 0;   }
     }
   `}</style>
+</div>
+<div className="relative my-4" aria-hidden>
+  <div className="h-px w-full bg-white/10" />
+  <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-emerald-400/40 via-sky-400/40 to-blue-400/40 blur-[1px]" />
 </div>
 
       {tiposSelecionados.length===0 && (
