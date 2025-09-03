@@ -1041,7 +1041,7 @@ const salvar = () => {
 >
 <div className="mb-2 pl-3 sm:pl-4">
       <h3 className="text-2xl sm:text-3xl font-extrabold">
-    Selecione o Tipo de Orçamento
+    Tipo de Orçamento
   </h3>
   <span className="text-xs text-slate-400"></span>
 </div>
