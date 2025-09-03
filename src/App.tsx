@@ -1039,12 +1039,16 @@ const salvar = () => {
 
 <div className="rounded-[20px]"
 >
-<div className="mb-2 pl-3 sm:pl-4">
+<div className="mb-2 pl-3 sm:pl-4 pr-3 sm:pr-4">
+    <div className="flex items-baseline justify-between">
       <h3 className="text-2xl sm:text-3xl font-extrabold">
-    Tipo de Orçamento
-  </h3>
-  <span className="text-xs text-slate-400"></span>
-</div>
+        Tipo de Orçamento
+      </h3>
+      <span className="text-[11px] sm:text-xs text-slate-400 whitespace-nowrap">
+        Selecione
+      </span>
+    </div>
+    </div>
 {/* 
 <div className="mb-3 pl-3 sm:pl-4">
       <h3 className="text-2xl sm:text-3xl font-extrabold">Instalação — Pontos</h3>
