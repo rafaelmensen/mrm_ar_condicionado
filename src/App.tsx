@@ -988,7 +988,7 @@ const salvar = () => {
   return (
     <div className="space-y-6">
 
-<div className="grid md:grid-cols-[2fr_220px] gap-3">
+<div className="grid grid-cols-1 gap-3">  {/* ou só "grid gap-3" */}
 
 <div className="rounded-[20px] border border-white/10 bg-white/5 pt-2 pb-3 px-3 sm:pt-3 sm:pb-4 sm:px-4">
 
@@ -1033,99 +1033,81 @@ const salvar = () => {
     </div>
   </div>
 
-<div className="rounded-[20px]
- border border-white/10 bg-white/5 p-4 flex flex-col gap-2 items-end justify-start w-[220px]">
 
-  <button
-    onClick={salvar}
-    className="px-6 py-2 rounded-xl font-semibold w-full text-white
-               bg-emerald-600 hover:bg-emerald-500 focus:outline-none
-               animate-pulse-green"
-  >
-    Salvar orçamento
-  </button>
-
-  <button
-    onClick={() => {
-      setCliente("");
-      setTelefone("");
-      setLocal("");
-      setObs("");
-      setPontos([]);
-    }}
-    className="px-6 py-2 rounded-xl font-semibold w-full text-slate-300
-               border border-white/10 bg-gray-900 hover:bg-gray-800
-               focus:outline-none"
-  >
-    Limpar
-  </button>
-</div>
-
-<style>
-{`
-  @keyframes pulse-green {
-    0%, 100% { background-color: rgba(23, 190, 134, 1); }
-    50%       { background-color: rgb(16, 185, 129); }
-    100%       { background-color: rgba(23, 154, 110, 1); }
-  }
-  .animate-pulse-green {
-    animation: pulse-green 1.8s ease-in-out infinite;
-  }
-`}
-</style>
 
 </div>
 
-<div className="rounded-[20px]
- border border-white/10 bg-white/5 p-3 sm:p-4"
+<div className="rounded-[20px]"
 >
-<div className="flex items-center justify-between mb-1">
-  <h3 className="text-lg font-extrabold leading-tight -mt-0.5">
+<div className="mb-3 pl-3 sm:pl-4">
+      <h3 className="text-2xl sm:text-3xl font-extrabold">
     Selecionar o Tipo de Orçamento
   </h3>
   <span className="text-xs text-slate-400"></span>
 </div>
+{/* 
+<div className="mb-3 pl-3 sm:pl-4">
+      <h3 className="text-2xl sm:text-3xl font-extrabold">Instalação — Pontos</h3>
+    <p className="text-sm text-slate-400 mt-0.5">Selecione os pontos.</p> */}
 
 
-  <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-    {RFQ_TYPES.map((t) => {
-      const active = tiposSelecionados.includes(t.id);
-      return (
-        <motion.button
-          key={t.id}
-          onClick={() => toggleTipo(t.id)}
-          className={`rfq-chip relative overflow-hidden w-full min-w-0 px-4 py-2 rounded-2xl border
-                      ${active
-                        ? 'border-transparent text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]'
-                        : 'border-white/10 text-slate-100'}
-                      bg-white/5 hover:bg-white/10`}
-          style={{ contain: 'layout paint' }}
-          layout
-          whileTap={{ scale: 0.97 }}
-          whileHover={{ scale: active ? 1.02 : 1.01 }}
-          transition={{ type: 'spring', stiffness: 500, damping: 30, mass: 0.6 }}
-        >
-          <AnimatePresence>
-            {active && (
-              <motion.div
-                key="bg"
-                className="absolute inset-0 nav-active-surface z-0"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.22 }}
-                aria-hidden
-              />
-            )}
-          </AnimatePresence>
+<div className="grid gap-2 grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+  {RFQ_TYPES.map((t: any) => {
+    const active = tiposSelecionados.includes(t?.id);
 
-          <span className="relative z-10 font-semibold whitespace-nowrap text-center block">
-            {t.label}
-          </span>
-        </motion.button>
-      );
-    })}
-  </div>
+    // texto “cheio” com fallback (label/nome/title/text/name ou string do próprio objeto)
+    const fullLabel: string =
+      (t?.label ?? t?.nome ?? t?.title ?? t?.text ?? t?.name ?? String(t)).trim();
+
+    // id com fallback
+    const id: string = (t?.id ?? fullLabel.toLowerCase()).trim();
+
+    // versão curta p/ mobile
+    const short =
+      id === "infra" ? "Infra" :
+      id === "instalacao" ? "Instalação" :
+      id === "gas" ? "Gás" :
+      id === "outros" ? "Outros" :
+      (fullLabel.split(" ")[0] || fullLabel);
+
+    return (
+      <motion.button
+        key={id}
+        onClick={() => toggleTipo(id)}
+        className={`rfq-chip relative overflow-hidden w-full min-w-0 px-4 py-2 rounded-2xl border
+                    ${active
+                      ? 'border-transparent text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)]'
+                      : 'border-white/10 text-slate-100'}
+                    bg-white/5 hover:bg-white/10`}
+        style={{ contain: 'layout paint' }}
+        layout
+        whileTap={{ scale: 0.97 }}
+        whileHover={{ scale: active ? 1.02 : 1.01 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 30, mass: 0.6 }}
+      >
+        <AnimatePresence>
+          {active && (
+            <motion.div
+              key="bg"
+              className="absolute inset-0 nav-active-surface z-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22 }}
+              aria-hidden
+            />
+          )}
+        </AnimatePresence>
+
+        <span className="relative z-10 font-semibold text-center block">
+          <span className="sm:hidden">{short}</span>
+          <span className="hidden sm:inline whitespace-nowrap">{fullLabel}</span>
+        </span>
+      </motion.button>
+    );
+  })}
+</div>
+
 
   <style>{`
     .rfq-chip{ -webkit-tap-highlight-color: transparent; }
@@ -1158,10 +1140,10 @@ const salvar = () => {
       )}
 
 { /* [REALIZAR > INSTALAÇÃO] Mesmas ferramentas do INFRA */ selectedTipo === "instalacao" && (
-<div className="rounded-[20px] border border-white/10 bg-white/5 pt-2 pb-3 px-3 sm:pt-2 sm:pb-4 sm:px-4">
-    <div className="mb-3">
-      <h3 className="text-lg font-extrabold">Instalação — Pontos</h3>
-      <p className="text-xs text-slate-400">Selecione os pontos.</p>
+<div className="rounded-[20px]">
+<div className="mb-3 pl-3 sm:pl-4">
+      <h3 className="text-2xl sm:text-3xl font-extrabold">Instalação — Pontos</h3>
+    <p className="text-sm text-slate-400 mt-0.5">Selecione os pontos.</p>
     </div>
 
     <div className="flex items-center gap-2 mb-3">
@@ -1875,10 +1857,11 @@ const salvar = () => {
 
 
 {tiposSelecionados.includes("infra") && (
-<div className="rounded-[20px] border border-white/10 bg-white/5 pt-2 pb-3 px-3 sm:pt-2 sm:pb-4 sm:px-4">
-    <div className="mb-3">
-      <h3 className="text-lg font-extrabold">Infra Estrutura</h3>
-      <p className="text-xs text-slate-400">Selecione os pontos.</p>
+<div className="rounded-[20px]">
+{/* <div className="rounded-[20px] border border-white/10 bg-white/5 pt-2 pb-3 px-3 sm:pt-2 sm:pb-4 sm:px-4"> */}
+<div className="mb-3 pl-3 sm:pl-4">
+      <h3 className="text-2xl sm:text-3xl font-extrabold">Infra Estrutura — Pontos</h3>
+    <p className="text-sm text-slate-400 mt-0.5">Selecione os pontos.</p>
     </div>
 
     <div className="flex items-center gap-2 mb-3">
@@ -2432,7 +2415,7 @@ const salvar = () => {
           </div>
 
 <div className="mt-4 rounded-[20px]
- border border-white/1 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
+ border border-white/10 bg-white/5 p-3 flex flex-wrap gap-3 items-center justify-end">
 
   {/* TÍTULO */}
   <div className="w-full -mt-1 mb-0">
@@ -2589,8 +2572,57 @@ const salvar = () => {
 </div>
 
 
+
         </div>
+        
       )}
+
+
+
+
+
+
+      
+      <div className="rounded-[20px]
+   flex flex-col gap-2 items-end ]">
+
+  <button
+    onClick={salvar}
+    className="px-6 py-2 rounded-xl font-semibold w-full text-white
+               bg-emerald-600 hover:bg-emerald-500 focus:outline-none
+               animate-pulse-green"
+  >
+    Salvar orçamento
+  </button>
+
+  <button
+    onClick={() => {
+      setCliente("");
+      setTelefone("");
+      setLocal("");
+      setObs("");
+      setPontos([]);
+    }}
+    className="px-6 py-2 rounded-xl font-semibold w-full text-slate-300
+               border border-white/10 bg-gray-900 hover:bg-gray-800
+               focus:outline-none"
+  >
+    Limpar
+  </button>
+</div>
+
+<style>
+{`
+  @keyframes pulse-green {
+    0%, 100% { background-color: rgba(23, 190, 134, 1); }
+    50%       { background-color: rgb(16, 185, 129); }
+    100%       { background-color: rgba(23, 154, 110, 1); }
+  }
+  .animate-pulse-green {
+    animation: pulse-green 1.8s ease-in-out infinite;
+  }
+`}
+</style>
 
     </div>
   );
